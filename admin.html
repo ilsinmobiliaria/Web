@@ -1,0 +1,5338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Akasa Inmobiliaria · Administración</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<style>
+:root{
+  --bg:#eee7dc;
+  --panel:rgba(255,255,255,.88);
+  --panel-soft:rgba(255,255,255,.72);
+  --text:#20201e;
+  --muted:#716d66;
+  --border:rgba(50,42,32,.13);
+  --shadow:0 18px 50px rgba(39,32,23,.12);
+  --shadow-hover:0 25px 65px rgba(39,32,23,.18);
+  --radius:22px;
+  --dark:#252421;
+  --green:#526455;
+  --green-dark:#3e4e41;
+  --danger:#a84e4e;
+  --gold:#9a7950;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+html,body{
+  margin:0;
+  min-height:100%;
+  font-family:"Inter",Arial,sans-serif;
+  color:var(--text);
+}
+
+body{
+  background:var(--bg);
+  overflow-x:hidden;
+}
+
+/* =========================================================
+   FONDO
+   ========================================================= */
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:-35px;
+  z-index:-3;
+  background:
+    linear-gradient(
+      rgba(235,226,211,.70),
+      rgba(235,226,211,.78)
+    ),
+    url("villa-fondo.png") center/cover no-repeat;
+  filter:blur(8px);
+  transform:scale(1.05);
+  animation:backgroundMove 18s ease-in-out infinite alternate;
+}
+
+@keyframes backgroundMove{
+  from{
+    transform:scale(1.05);
+  }
+  to{
+    transform:scale(1.09);
+  }
+}
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+#loginScreen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:25px;
+  animation:fadeIn .7s ease;
+}
+
+.login-card{
+  width:min(430px,100%);
+  background:rgba(255,255,255,.90);
+  border:1px solid rgba(255,255,255,.7);
+  border-radius:28px;
+  padding:38px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(15px);
+  animation:loginEntrance .7s cubic-bezier(.2,.8,.2,1);
+  transition:.3s ease;
+}
+
+.login-card:hover{
+  box-shadow:var(--shadow-hover);
+  transform:translateY(-3px);
+}
+
+.logo-box{
+  width:90px;
+  height:70px;
+  border-radius:15px;
+  background:rgba(255,255,255,.9);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 20px;
+  overflow:hidden;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+.logo-box img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.login-card h1{
+  text-align:center;
+  margin:0 0 7px;
+  font-size:27px;
+}
+
+.login-card .subtitle{
+  text-align:center;
+  color:var(--muted);
+  margin-bottom:28px;
+}
+
+@keyframes loginEntrance{
+  from{
+    opacity:0;
+    transform:translateY(25px) scale(.97);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+/* =========================================================
+   FORMULARIOS
+   ========================================================= */
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:7px;
+}
+
+input,
+textarea,
+select{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:rgba(255,255,255,.88);
+  padding:12px 13px;
+  font:inherit;
+  color:var(--text);
+  outline:none;
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease,
+    transform .2s ease,
+    background .2s ease;
+}
+
+input:hover,
+textarea:hover,
+select:hover{
+  background:white;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+  border-color:var(--green);
+  box-shadow:0 0 0 4px rgba(82,100,85,.10);
+  transform:translateY(-1px);
+}
+
+textarea{
+  min-height:115px;
+  resize:vertical;
+}
+
+.form-group{
+  margin-bottom:16px;
+}
+
+.btn{
+  border:0;
+  border-radius:13px;
+  padding:12px 17px;
+  font:inherit;
+  font-weight:700;
+  cursor:pointer;
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    background .18s ease,
+    opacity .18s ease;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(0,0,0,.10);
+}
+
+.btn:active{
+  transform:translateY(0) scale(.98);
+}
+
+.btn-primary{
+  background:var(--dark);
+  color:white;
+}
+
+.btn-green{
+  background:var(--green);
+  color:white;
+}
+
+.btn-green:hover{
+  background:var(--green-dark);
+}
+
+.btn-light{
+  background:rgba(255,255,255,.85);
+  color:var(--text);
+  border:1px solid var(--border);
+}
+
+.btn-danger{
+  background:var(--danger);
+  color:white;
+}
+
+.btn-small{
+  padding:8px 11px;
+  font-size:12px;
+}
+
+.full{
+  width:100%;
+}
+
+.error{
+  background:#f8dddd;
+  color:#8a3030;
+  padding:11px 13px;
+  border-radius:12px;
+  margin-bottom:15px;
+  display:none;
+  font-size:13px;
+  animation:shake .35s ease;
+}
+
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-5px)}
+  75%{transform:translateX(5px)}
+}
+
+/* =========================================================
+   APP
+   ========================================================= */
+
+#app{
+  display:none;
+  min-height:100vh;
+  animation:fadeIn .5s ease;
+}
+
+.app-shell{
+  display:grid;
+  grid-template-columns:245px 1fr;
+  min-height:100vh;
+}
+
+.sidebar{
+  background:rgba(38,37,34,.94);
+  color:white;
+  padding:22px 15px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  z-index:20;
+  box-shadow:10px 0 35px rgba(0,0,0,.12);
+}
+
+.sidebar-brand{
+  padding:5px 10px 25px;
+  border-bottom:1px solid rgba(255,255,255,.10);
+  margin-bottom:20px;
+}
+
+.sidebar-brand strong{
+  display:block;
+  font-size:21px;
+  letter-spacing:.08em;
+}
+
+.sidebar-brand span{
+  color:rgba(255,255,255,.58);
+  font-size:12px;
+}
+
+.nav-btn{
+  width:100%;
+  border:0;
+  background:transparent;
+  color:rgba(255,255,255,.72);
+  padding:13px 14px;
+  text-align:left;
+  border-radius:12px;
+  cursor:pointer;
+  font:inherit;
+  font-weight:600;
+  margin-bottom:5px;
+  transition:
+    background .2s ease,
+    color .2s ease,
+    transform .2s ease;
+}
+
+.nav-btn:hover{
+  background:rgba(255,255,255,.10);
+  color:white;
+  transform:translateX(3px);
+}
+
+.nav-btn.active{
+  background:rgba(255,255,255,.13);
+  color:white;
+  box-shadow:inset 3px 0 0 rgba(255,255,255,.7);
+}
+
+.sidebar-bottom{
+  position:absolute;
+  left:15px;
+  right:15px;
+  bottom:18px;
+}
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.main{
+  min-width:0;
+  padding:25px;
+}
+
+.topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:24px;
+  animation:slideDown .6s ease;
+}
+
+.topbar h1{
+  margin:0;
+  font-size:30px;
+}
+
+.topbar p{
+  margin:5px 0 0;
+  color:var(--muted);
+}
+
+.status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+  color:var(--muted);
+  background:rgba(255,255,255,.55);
+  padding:9px 13px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.65);
+}
+
+.status-dot{
+  width:9px;
+  height:9px;
+  background:#5d8c62;
+  border-radius:50%;
+  box-shadow:0 0 0 5px rgba(93,140,98,.12);
+  animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+  0%,100%{
+    box-shadow:0 0 0 4px rgba(93,140,98,.12);
+  }
+  50%{
+    box-shadow:0 0 0 8px rgba(93,140,98,.03);
+  }
+}
+
+@keyframes slideDown{
+  from{
+    opacity:0;
+    transform:translateY(-12px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* =========================================================
+   PANELS
+   ========================================================= */
+
+.section-panel{
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,.65);
+  border-radius:var(--radius);
+  padding:22px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(14px);
+  margin-bottom:22px;
+  animation:panelEntrance .5s ease both;
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+}
+
+.section-panel:hover{
+  box-shadow:var(--shadow-hover);
+}
+
+.section-panel h2{
+  margin:0 0 5px;
+  font-size:21px;
+}
+
+.section-description{
+  color:var(--muted);
+  font-size:13px;
+  margin:0 0 18px;
+}
+
+@keyframes panelEntrance{
+  from{
+    opacity:0;
+    transform:translateY(14px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin-bottom:22px;
+}
+
+.stat-card{
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,.65);
+  border-radius:19px;
+  padding:19px;
+  box-shadow:0 12px 30px rgba(39,32,23,.08);
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
+  animation:statEntrance .6s ease both;
+}
+
+.stat-card:nth-child(1){animation-delay:.05s}
+.stat-card:nth-child(2){animation-delay:.10s}
+.stat-card:nth-child(3){animation-delay:.15s}
+.stat-card:nth-child(4){animation-delay:.20s}
+
+.stat-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 20px 40px rgba(39,32,23,.14);
+}
+
+.stat-card span{
+  color:var(--muted);
+  font-size:13px;
+}
+
+.stat-card strong{
+  display:block;
+  font-size:30px;
+  margin-top:6px;
+}
+
+@keyframes statEntrance{
+  from{
+    opacity:0;
+    transform:translateY(20px) scale(.97);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+
+/* =========================================================
+   FILTERS
+   ========================================================= */
+
+.filters{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr auto;
+  gap:10px;
+  align-items:end;
+}
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.table-wrap{
+  overflow:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:800px;
+}
+
+th,
+td{
+  text-align:left;
+  padding:13px 10px;
+  border-bottom:1px solid var(--border);
+  font-size:13px;
+  vertical-align:middle;
+}
+
+tbody tr{
+  transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+tbody tr:hover{
+  background:rgba(255,255,255,.55);
+}
+
+th{
+  color:var(--muted);
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+
+.property-title{
+  font-weight:750;
+}
+
+.property-location{
+  color:var(--muted);
+  margin-top:3px;
+  font-size:12px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  padding:5px 9px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:750;
+}
+
+.badge-published{
+  background:#dfeee1;
+  color:#35633b;
+}
+
+.badge-hidden{
+  background:#eee2d8;
+  color:#805e46;
+}
+
+.tags{
+  display:flex;
+  gap:5px;
+  flex-wrap:wrap;
+}
+
+.tag{
+  background:#e8e1d7;
+  color:#625a4f;
+  border-radius:999px;
+  padding:4px 8px;
+  font-size:11px;
+  transition:.2s ease;
+}
+
+.tag:hover{
+  transform:translateY(-1px);
+  background:#ddd5c8;
+}
+
+/* =========================================================
+   PROPERTY FORM
+   ========================================================= */
+
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+}
+
+.form-grid .full-width{
+  grid-column:1/-1;
+}
+
+.form-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+  margin-top:18px;
+}
+
+.check-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.check-row input{
+  width:auto;
+}
+
+/* =========================================================
+   IMAGES
+   ========================================================= */
+
+.upload-area{
+  border:2px dashed rgba(82,100,85,.30);
+  border-radius:17px;
+  padding:20px;
+  text-align:center;
+  background:rgba(255,255,255,.45);
+  transition:.25s ease;
+}
+
+.upload-area:hover{
+  background:rgba(255,255,255,.7);
+  border-color:rgba(82,100,85,.55);
+  transform:translateY(-2px);
+}
+
+.upload-area p{
+  margin:5px 0;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.image-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  gap:10px;
+  margin-top:15px;
+}
+
+.image-item{
+  position:relative;
+  height:120px;
+  border-radius:13px;
+  overflow:hidden;
+  background:#ddd;
+  animation:imageEntrance .35s ease both;
+}
+
+.image-item img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .35s ease;
+}
+
+.image-item:hover img{
+  transform:scale(1.06);
+}
+
+.image-remove{
+  position:absolute;
+  top:6px;
+  right:6px;
+  width:27px;
+  height:27px;
+  border-radius:50%;
+  border:0;
+  background:rgba(0,0,0,.70);
+  color:white;
+  cursor:pointer;
+  transition:.2s ease;
+}
+
+.image-remove:hover{
+  background:#a84e4e;
+  transform:scale(1.08);
+}
+
+@keyframes imageEntrance{
+  from{
+    opacity:0;
+    transform:scale(.9);
+  }
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+/* =========================================================
+   UPLOAD MODERNO
+   ========================================================= */
+
+.upload-area{
+  position:relative;
+  cursor:pointer;
+  overflow:hidden;
+}
+
+.upload-area.dragover{
+  border-color:var(--green);
+  background:rgba(82,100,85,.12);
+  transform:scale(1.01);
+}
+
+.upload-icon{
+  width:54px;height:54px;margin:0 auto 10px;border-radius:16px;
+  display:grid;place-items:center;background:rgba(82,100,85,.10);
+  color:var(--green);
+}
+
+.upload-title{font-weight:800;font-size:14px;color:var(--text)}
+.upload-subtitle{font-size:12px;color:var(--muted);margin-top:5px}
+.upload-button{display:inline-flex;align-items:center;gap:7px;margin-top:12px}
+.upload-progress{display:none;margin-top:14px;text-align:left}
+.progress-track{height:8px;background:#e5dfd5;border-radius:999px;overflow:hidden}
+.progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--green),#8a9b87);border-radius:999px;transition:width .25s ease}
+.upload-status{font-size:12px;color:var(--muted);margin-top:7px}
+.file-name{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:7px 9px;background:rgba(255,255,255,.65);border-radius:10px}
+.client-upload-preview{display:flex;align-items:center;gap:14px;margin-top:12px;padding:12px;border:1px solid var(--border);border-radius:15px;background:rgba(255,255,255,.55)}
+.client-upload-preview img{width:70px;height:70px;border-radius:16px;object-fit:cover}
+.client-upload-preview .preview-meta{min-width:0;flex:1}
+.profile-mini{display:flex;align-items:center;gap:13px;margin-top:18px;padding:13px;border:1px solid var(--border);border-radius:16px;background:rgba(255,255,255,.48)}
+.profile-mini img{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid white;box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.profile-mini strong{display:block}.profile-mini span{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+
+/* =========================================================
+   CLIENTES
+   ========================================================= */
+
+.client-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:15px;
+}
+
+.client-card{
+  background:rgba(255,255,255,.72);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:17px;
+  transition:.25s ease;
+  animation:panelEntrance .45s ease both;
+}
+
+.client-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 18px 35px rgba(39,32,23,.10);
+}
+
+.client-card h3{
+  margin:0 0 5px;
+}
+
+.client-card p{
+  color:var(--muted);
+  font-size:13px;
+  margin:5px 0;
+}
+
+.client-photo{
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  object-fit:cover;
+  background:#ddd;
+  margin-bottom:10px;
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:rgba(25,23,20,.55);
+  backdrop-filter:blur(7px);
+  padding:20px;
+  overflow:auto;
+}
+
+.modal.show{
+  animation:modalBackground .25s ease;
+}
+
+.modal-box{
+  width:min(900px,100%);
+  margin:30px auto;
+  background:#f8f5ef;
+  border-radius:25px;
+  padding:25px;
+  box-shadow:0 30px 80px rgba(0,0,0,.25);
+  animation:modalEntrance .3s cubic-bezier(.2,.8,.2,1);
+}
+
+.modal-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.modal-head h2{
+  margin:0;
+}
+
+.close{
+  width:38px;
+  height:38px;
+  border:0;
+  border-radius:50%;
+  background:#e7e1d7;
+  cursor:pointer;
+  font-size:20px;
+  transition:.2s ease;
+}
+
+.close:hover{
+  transform:rotate(90deg);
+  background:#dcd4c7;
+}
+
+@keyframes modalBackground{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+@keyframes modalEntrance{
+  from{
+    opacity:0;
+    transform:translateY(25px) scale(.97);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+#toast{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  z-index:200;
+  padding:13px 17px;
+  background:#272623;
+  color:white;
+  border-radius:13px;
+  box-shadow:var(--shadow);
+  display:none;
+  max-width:350px;
+  font-size:13px;
+  animation:toastEntrance .3s ease;
+}
+
+@keyframes toastEntrance{
+  from{
+    opacity:0;
+    transform:translateY(15px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media(max-width:1050px){
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .filters{
+    grid-template-columns:1fr 1fr;
+  }
+
+}
+
+@media(max-width:800px){
+
+  .app-shell{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    position:relative;
+    height:auto;
+    padding:12px;
+  }
+
+  .sidebar-bottom{
+    position:static;
+    margin-top:10px;
+  }
+
+  .sidebar nav{
+    display:flex;
+    overflow:auto;
+    gap:5px;
+  }
+
+  .nav-btn{
+    white-space:nowrap;
+    width:auto;
+  }
+
+  .main{
+    padding:15px;
+  }
+
+  .topbar{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .form-grid{
+    grid-template-columns:1fr;
+  }
+
+  .form-grid .full-width{
+    grid-column:auto;
+  }
+
+}
+
+@media(max-width:520px){
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  .filters{
+    grid-template-columns:1fr;
+  }
+
+  .login-card{
+    padding:25px;
+  }
+
+  .main{
+    padding:10px;
+  }
+
+  .section-panel{
+    padding:17px;
+  }
+
+}
+
+/* =========================================================
+   BANNER AKASA + ANIMACIONES SUAVES
+   ========================================================= */
+.akasa-hero-banner{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  min-height:230px;
+  margin-bottom:22px;
+  padding:30px clamp(22px,4vw,42px);
+  display:flex;
+  align-items:center;
+  border-radius:26px;
+  color:#fff;
+  background:linear-gradient(115deg,rgba(34,39,33,.98),rgba(69,86,69,.95) 58%,rgba(126,111,82,.91));
+  box-shadow:0 22px 55px rgba(37,42,32,.20);
+  animation:heroReveal .8s cubic-bezier(.2,.8,.2,1) both;
+}
+.akasa-hero-banner::before{
+  content:"";
+  position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(105deg,transparent 25%,rgba(255,255,255,.10) 48%,transparent 68%);
+  transform:translateX(-100%);
+  animation:heroShimmer 8s ease-in-out infinite;
+}
+.hero-glow{
+  position:absolute;z-index:-1;width:320px;height:320px;right:12%;top:-180px;
+  border-radius:50%;background:rgba(222,202,161,.20);filter:blur(3px);
+  animation:glowFloat 7s ease-in-out infinite alternate;
+}
+.hero-content{position:relative;z-index:2;max-width:640px}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:.18em;color:#e6d5b5}
+.hero-content h2{font-family:"Manrope",sans-serif;font-size:clamp(24px,3vw,36px);line-height:1.14;letter-spacing:-.04em;margin:14px 0 10px;max-width:590px}
+.hero-content p{max-width:540px;color:rgba(255,255,255,.75);font-size:14px;line-height:1.7;margin:0 0 18px}
+.hero-button{display:inline-flex;align-items:center;gap:8px;background:#eee5d5;color:#292d27}
+.hero-button:hover{background:#fff}
+.hero-decoration{position:absolute;right:5%;top:50%;width:240px;height:240px;transform:translateY(-50%);pointer-events:none}
+.hero-ring{position:absolute;inset:8px;border:1px solid rgba(255,255,255,.22);border-radius:50%;animation:ringRotate 28s linear infinite}
+.ring-two{inset:32px;border-style:dashed;animation-direction:reverse;animation-duration:38s}
+.hero-mark{position:absolute;inset:0;display:grid;place-items:center;font-family:"Manrope",sans-serif;font-size:150px;font-weight:800;color:rgba(255,255,255,.10);text-shadow:0 8px 35px rgba(0,0,0,.12)}
+@keyframes heroReveal{from{opacity:0;transform:translateY(18px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes heroShimmer{0%,60%{transform:translateX(-100%)}85%,100%{transform:translateX(100%)}}
+@keyframes glowFloat{from{transform:translate(0,0) scale(.9)}to{transform:translate(-35px,35px) scale(1.12)}}
+@keyframes ringRotate{to{transform:rotate(360deg)}}
+.section-panel,.stat-card,.client-card{will-change:transform,opacity}
+.stat-card{position:relative;overflow:hidden}
+.stat-card::after{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--green),#c4a779);transform:scaleX(0);transform-origin:left;transition:transform .35s ease}
+.stat-card:hover::after{transform:scaleX(1)}
+.btn:focus-visible,.nav-btn:focus-visible{outline:3px solid rgba(154,121,80,.55);outline-offset:3px}
+@media(max-width:650px){
+  .akasa-hero-banner{min-height:0;padding:25px 22px}
+  .hero-decoration{right:-95px;opacity:.55}
+  .hero-content{max-width:100%}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
+
+
+/* =========================================================
+   REDISEÑO 2026 · AKASA MODERN EDITION
+   ========================================================= */
+:root{
+  --bg:#f3f1eb;--panel:rgba(255,255,255,.94);--panel-soft:rgba(255,255,255,.78);
+  --text:#202923;--muted:#7b827a;--border:rgba(37,53,42,.10);
+  --shadow:0 18px 48px rgba(34,48,37,.07);--shadow-hover:0 24px 58px rgba(34,48,37,.13);
+  --radius:22px;--dark:#17251d;--green:#486653;--green-dark:#314a39;--gold:#c4a779;
+}
+body::before{background:linear-gradient(135deg,rgba(245,244,238,.89),rgba(234,237,229,.88)),url("villa-fondo.png") center/cover no-repeat;filter:blur(4px);}
+.app-shell{grid-template-columns:278px minmax(0,1fr);gap:0;}
+.sidebar{background:linear-gradient(165deg,#17241c 0%,#202f25 54%,#293b2e 100%);padding:25px 17px 20px;box-shadow:14px 0 40px rgba(20,35,25,.10);border-right:1px solid rgba(255,255,255,.06);overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.16) transparent;}
+.sidebar::before{content:"";position:absolute;top:-100px;left:-100px;width:270px;height:270px;border-radius:50%;border:1px solid rgba(213,190,147,.10);box-shadow:0 0 0 24px rgba(213,190,147,.025),0 0 0 50px rgba(213,190,147,.02);pointer-events:none;}
+.sidebar-brand{position:relative;display:flex;align-items:center;gap:12px;padding:4px 8px 23px;margin-bottom:20px;border-bottom:1px solid rgba(255,255,255,.11);}
+.brand-emblem{width:43px;height:43px;display:grid;place-items:center;border-radius:15px;background:linear-gradient(145deg,#d9c39b,#9c8055);color:#1e2b21;box-shadow:0 7px 22px rgba(0,0,0,.18);}
+.brand-emblem svg{width:23px;height:23px;stroke-width:1.8;}
+.brand-copy strong{display:block;font-family:Manrope,sans-serif;font-size:22px;letter-spacing:.16em;line-height:1.2;color:#fff;}
+.brand-dot{color:#d7bd8f;}
+.brand-copy span{display:block;margin-top:5px;font-size:9px;letter-spacing:.18em;font-weight:700;color:rgba(255,255,255,.50);}
+.sidebar-profile{position:relative;display:flex;align-items:center;gap:11px;padding:10px;margin:0 0 25px;border:1px solid rgba(255,255,255,.09);border-radius:17px;background:rgba(255,255,255,.055);}
+.sidebar-profile-image{flex:0 0 46px;width:46px;height:46px;border-radius:12px;background:linear-gradient(180deg,rgba(18,31,23,.03),rgba(18,31,23,.28)),url("https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=180&q=80") center/cover;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12);}
+.sidebar-profile strong{display:block;color:#f6f5ef;font-size:12px;font-weight:700;}
+.sidebar-profile span:not(.online-indicator){display:block;margin-top:4px;font-size:10px;color:rgba(255,255,255,.48);}
+.online-indicator{position:absolute;right:11px;top:12px;width:7px;height:7px;border-radius:50%;background:#a9d3a7;box-shadow:0 0 0 4px rgba(169,211,167,.10);}
+.nav-caption{padding:0 12px;margin-bottom:10px;font-size:9px;letter-spacing:.17em;font-weight:800;color:rgba(255,255,255,.36);}
+.main-navigation{display:grid;gap:6px;}
+.nav-btn{position:relative;display:flex;align-items:center;gap:12px;width:100%;padding:12px 12px;margin:0;border:1px solid transparent;border-radius:13px;color:rgba(255,255,255,.63);font-size:12px;font-weight:600;letter-spacing:.005em;transition:background .25s ease,color .25s ease,transform .25s ease,border-color .25s ease,box-shadow .25s ease;}
+.nav-icon{display:grid;place-items:center;width:30px;height:30px;flex:0 0 30px;border-radius:10px;color:rgba(255,255,255,.63);background:rgba(255,255,255,.055);transition:all .25s ease;}
+.nav-icon svg{width:16px;height:16px;stroke-width:1.8;}
+.nav-label{flex:1;text-align:left;}
+.nav-chevron{width:14px;height:14px;opacity:0;transform:translateX(-4px);transition:all .22s ease;}
+.nav-btn:hover{background:rgba(255,255,255,.075);border-color:rgba(255,255,255,.05);color:#fff;transform:translateX(3px);}
+.nav-btn:hover .nav-chevron{opacity:.55;transform:translateX(0);}
+.nav-btn.active{color:#fff;background:linear-gradient(100deg,rgba(196,167,121,.22),rgba(255,255,255,.075));border-color:rgba(213,190,147,.20);box-shadow:inset 3px 0 0 #d4b985,0 8px 22px rgba(0,0,0,.08);}
+.nav-btn.active .nav-icon{background:#d4bc92;color:#1c2b20;box-shadow:0 5px 14px rgba(0,0,0,.14);}
+.nav-btn.active .nav-chevron{opacity:.65;transform:translateX(0);}
+.sidebar-resource{position:relative;overflow:hidden;margin-top:28px;padding:16px 14px 15px;border-radius:17px;border:1px solid rgba(213,190,147,.18);background:linear-gradient(145deg,rgba(213,190,147,.12),rgba(255,255,255,.035));}
+.sidebar-resource::after{content:"";position:absolute;right:-33px;top:-35px;width:105px;height:105px;border:1px solid rgba(213,190,147,.17);border-radius:50%;box-shadow:0 0 0 13px rgba(213,190,147,.035),0 0 0 27px rgba(213,190,147,.025);pointer-events:none;}
+.resource-icon{display:grid;place-items:center;width:30px;height:30px;margin-bottom:11px;border-radius:10px;background:rgba(213,190,147,.15);color:#e0c89c;}
+.resource-icon svg{width:16px;height:16px;}
+.sidebar-resource strong{position:relative;display:block;color:#f8f6ee;font-size:11px;}
+.sidebar-resource p{position:relative;color:rgba(255,255,255,.51);font-size:10px;line-height:1.65;margin:7px 0 12px;}
+.sidebar-resource a{position:relative;display:inline-flex;align-items:center;gap:5px;color:#dfc99f;font-size:10px;font-weight:700;text-decoration:none;}
+.sidebar-resource a svg,.sidebar-footer-links svg{width:12px;height:12px;}
+.sidebar-resource a:hover{color:#fff;}
+.sidebar-bottom{left:17px;right:17px;bottom:18px;position:relative;margin-top:25px;}
+.sidebar-footer-links{display:flex;gap:8px;align-items:center;padding:13px 10px 8px;color:rgba(255,255,255,.24);font-size:10px;}
+.sidebar-footer-links a{color:rgba(255,255,255,.43);text-decoration:none;transition:color .2s;}
+.sidebar-footer-links a:hover{color:#e3cda4;}
+.logout-btn{margin-top:2px!important;border-top:1px solid rgba(255,255,255,.07)!important;border-radius:0 0 12px 12px!important;padding-top:14px!important;}
+.logout-btn .nav-icon{background:rgba(255,255,255,.04);}
+.sidebar-version{display:flex;align-items:center;gap:6px;padding:14px 10px 0;color:rgba(255,255,255,.31);font-size:9px;letter-spacing:.03em;}
+.version-dot{width:5px;height:5px;border-radius:50%;background:#9fbe9e;}
+.main{padding:30px clamp(18px,3vw,44px);max-width:1800px;width:100%;margin:0 auto;}
+.topbar{padding:4px 0 22px;border-bottom:1px solid rgba(37,53,42,.08);margin-bottom:25px;}
+.topbar h1{font-family:Manrope,sans-serif;font-size:clamp(25px,2.2vw,33px);letter-spacing:-.045em;font-weight:800;color:#243328;}
+.topbar p{font-size:12px;color:#7f867d;}
+.modern-status{display:flex;align-items:center;gap:9px;padding:10px 13px;background:rgba(255,255,255,.75);border:1px solid rgba(49,74,57,.09);border-radius:999px;font-size:11px;box-shadow:0 5px 18px rgba(35,48,37,.035);}
+.modern-status svg{width:15px;height:15px;color:#58725b;}
+.status-divider{height:17px;width:1px;background:rgba(37,53,42,.13);}
+.akasa-hero-banner{min-height:285px;padding:clamp(25px,4vw,48px);border-radius:28px;background:linear-gradient(90deg,rgba(21,37,27,.96) 0%,rgba(31,50,37,.88) 47%,rgba(32,48,36,.25) 100%),url("https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1800&q=85") center 52%/cover no-repeat;box-shadow:0 24px 65px rgba(30,46,34,.18);}
+.akasa-hero-banner::after{content:"";position:absolute;inset:0;z-index:-1;border:1px solid rgba(255,255,255,.16);border-radius:inherit;pointer-events:none;}
+.hero-content{max-width:620px;}
+.hero-kicker{font-size:10px;letter-spacing:.2em;}
+.hero-content h2{font-size:clamp(28px,3.2vw,43px);max-width:610px;}
+.hero-content p{font-size:13px;max-width:470px;}
+.hero-actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.hero-button{padding:12px 17px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.12);font-weight:700;}
+.hero-link{display:inline-flex;align-items:center;gap:7px;color:rgba(255,255,255,.86);font-size:11px;font-weight:600;text-decoration:none;transition:color .2s,transform .2s;}
+.hero-link svg{width:14px;height:14px;}
+.hero-link:hover{color:#e8d4ad;transform:translateY(-2px);}
+.hero-decoration{right:4%;opacity:.7;}
+.stat-card,.section-panel,.client-card{border:1px solid rgba(43,61,46,.08);box-shadow:0 12px 36px rgba(33,47,35,.045);backdrop-filter:blur(12px);}
+.stat-card{border-radius:20px;transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease;}
+.stat-card:hover{transform:translateY(-5px);border-color:rgba(80,111,85,.19);box-shadow:0 20px 40px rgba(33,47,35,.10);}
+.section-panel{border-radius:22px;}
+.btn{border-radius:12px;transition:transform .22s ease,box-shadow .22s ease,background .22s ease;}
+.btn:hover{transform:translateY(-2px);}
+input,select,textarea{transition:border-color .2s,box-shadow .2s,background .2s;}
+input:focus,select:focus,textarea:focus{border-color:rgba(72,102,83,.55)!important;box-shadow:0 0 0 4px rgba(72,102,83,.09)!important;outline:none;}
+@media(max-width:1000px){.app-shell{grid-template-columns:238px minmax(0,1fr)}.sidebar{padding-left:13px;padding-right:13px}.sidebar-bottom{left:13px;right:13px}.main{padding:23px 18px}.sidebar-resource{padding:13px 11px}}
+@media(max-width:800px){.app-shell{grid-template-columns:1fr}.sidebar{position:relative;height:auto;overflow:visible;padding:14px 14px 12px}.sidebar::before{display:none}.sidebar-brand{padding:2px 6px 14px;margin-bottom:12px}.sidebar-profile,.nav-caption,.sidebar-resource,.sidebar-footer-links,.sidebar-version{display:none}.main-navigation{display:flex;gap:5px;overflow-x:auto;padding-bottom:2px}.nav-btn{flex:0 0 auto;width:auto;min-width:fit-content;padding:7px 10px;gap:8px;border-radius:12px}.nav-icon{width:29px;height:29px;flex-basis:29px}.nav-label{text-align:left}.nav-chevron{display:none}.sidebar-bottom{margin-top:8px;left:auto;right:auto;bottom:auto}.logout-btn{width:auto!important;margin:0!important;border:1px solid rgba(255,255,255,.08)!important;border-radius:12px!important;padding:8px 10px!important}.logout-btn .nav-label{display:inline}.main{padding:17px 13px}.topbar{gap:12px}.modern-status{padding:8px 10px}.akasa-hero-banner{min-height:280px;padding:27px 23px;background-position:60% center}.hero-decoration{right:-90px}.stats{gap:12px}}
+@media(max-width:470px){.brand-copy strong{font-size:19px}.brand-emblem{width:38px;height:38px}.topbar h1{font-size:25px}.modern-status{font-size:10px}.modern-status .status-divider,.modern-status svg{display:none}.hero-content h2{font-size:28px}.hero-actions{gap:13px}.hero-link{font-size:10px}.stats{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){.sidebar-profile-image,.nav-btn,.stat-card,.hero-link{transition:none!important}}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================================================
+     LOGIN
+     ========================================================= -->
+
+<section id="loginScreen">
+
+  <div class="login-card">
+
+    <div class="logo-box">
+      <img src="akasa.logotipo.svg" alt="Akasa Inmobiliaria">
+    </div>
+
+    <h1>Akasa Inmobiliaria</h1>
+
+    <div class="subtitle">
+      Panel de administración
+    </div>
+
+    <div id="loginError" class="error"></div>
+
+    <form id="loginForm">
+
+      <div class="form-group">
+
+        <label for="loginEmail">
+          Correo del administrador
+        </label>
+
+        <input
+          id="loginEmail"
+          type="email"
+          placeholder="Correo utilizado en Supabase Auth"
+          required
+        >
+
+      </div>
+
+      <div class="form-group">
+
+        <label for="loginPassword">
+          Contraseña
+        </label>
+
+        <input
+          id="loginPassword"
+          type="password"
+          placeholder="Contraseña"
+          required
+        >
+
+      </div>
+
+      <button
+        class="btn btn-primary full"
+        type="submit"
+      >
+        Entrar al administrador
+      </button>
+
+    </form>
+
+  </div>
+
+</section>
+
+
+<!-- =========================================================
+     APP
+     ========================================================= -->
+
+<div id="app">
+
+  <div class="app-shell">
+
+    <aside class="sidebar">
+
+      <div class="sidebar-brand">
+        <div class="brand-emblem"><i data-lucide="house"></i></div>
+        <div class="brand-copy">
+          <strong>AKASA<span class="brand-dot">.</span></strong>
+          <span>REAL ESTATE · ADMIN</span>
+        </div>
+      </div>
+
+      <div class="sidebar-profile">
+        <div class="sidebar-profile-image" role="img" aria-label="Arquitectura moderna"></div>
+        <div><strong>Panel privado</strong><span>Tu negocio, en orden</span></div>
+        <span class="online-indicator" title="Panel activo"></span>
+      </div>
+
+      <div class="nav-caption">ESPACIO DE TRABAJO</div>
+      <nav class="main-navigation">
+        <button class="nav-btn active" data-section="dashboardSection">
+          <span class="nav-icon"><i data-lucide="layout-dashboard"></i></span><span class="nav-label">Resumen general</span><i data-lucide="chevron-right" class="nav-chevron"></i>
+        </button>
+        <button class="nav-btn" data-section="propertiesSection">
+          <span class="nav-icon"><i data-lucide="building-2"></i></span><span class="nav-label">Propiedades</span><i data-lucide="chevron-right" class="nav-chevron"></i>
+        </button>
+        <button class="nav-btn" data-section="clientsSection">
+          <span class="nav-icon"><i data-lucide="users-round"></i></span><span class="nav-label">Clientes</span><i data-lucide="chevron-right" class="nav-chevron"></i>
+        </button>
+      </nav>
+
+      <div class="sidebar-resource">
+        <div class="resource-icon"><i data-lucide="lightbulb"></i></div>
+        <strong>Un espacio con estilo</strong>
+        <p>Ideas visuales para presentar propiedades con más impacto.</p>
+        <a href="https://unsplash.com/s/photos/modern-villa" target="_blank" rel="noopener noreferrer">Explorar inspiración <i data-lucide="arrow-up-right"></i></a>
+      </div>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-footer-links"><a href="https://lucide.dev/icons/" target="_blank" rel="noopener noreferrer">Iconos</a><span>·</span><a href="https://unsplash.com/license" target="_blank" rel="noopener noreferrer">Fotos</a></div>
+        <button id="logoutBtn" class="nav-btn logout-btn">
+          <span class="nav-icon"><i data-lucide="log-out"></i></span><span class="nav-label">Cerrar sesión</span>
+        </button>
+        <div class="sidebar-version"><span class="version-dot"></span> Sistema Akasa <span>•</span> Privado</div>
+      </div>
+
+    </aside>
+
+
+    <main class="main">
+
+      <div class="topbar">
+
+        <div>
+
+          <h1 id="pageTitle">
+            Dashboard
+          </h1>
+
+          <p>
+            Administración privada de Akasa Inmobiliaria
+          </p>
+
+        </div>
+
+        <div class="status modern-status">
+          <span class="status-dot"></span>
+          <span>Sesión segura</span>
+          <span class="status-divider"></span>
+          <i data-lucide="shield-check"></i>
+        </div>
+
+      </div>
+
+
+      <!-- DASHBOARD -->
+
+      <section
+        id="dashboardSection"
+        class="page-section"
+      >
+
+          <div class="akasa-hero-banner">
+            <div class="hero-glow"></div>
+            <div class="hero-content">
+              <span class="hero-kicker"><i data-lucide="sparkles"></i> AKASA INMOBILIARIA</span>
+              <h2>Tu espacio para gestionar propiedades extraordinarias.</h2>
+              <p>Organiza tus anuncios, actualiza la información y mantén tu catálogo al día.</p>
+              <div class="hero-actions"><button class="btn hero-button" onclick="openPropertyModal()"><i data-lucide="plus"></i> Añadir propiedad</button><a class="hero-link" href="https://unsplash.com/s/photos/luxurious-house" target="_blank" rel="noopener noreferrer"><i data-lucide="images"></i> Inspiración visual <i data-lucide="arrow-up-right"></i></a></div>
+            </div>
+            <div class="hero-decoration" aria-hidden="true">
+              <span class="hero-ring ring-one"></span>
+              <span class="hero-ring ring-two"></span>
+              <span class="hero-mark">A</span>
+            </div>
+          </div>
+
+        <div class="stats">
+
+          <div class="stat-card">
+
+            <span>
+              Total propiedades
+            </span>
+
+            <strong id="statProperties">
+              0
+            </strong>
+
+          </div>
+
+          <div class="stat-card">
+
+            <span>
+              Publicadas
+            </span>
+
+            <strong id="statPublished">
+              0
+            </strong>
+
+          </div>
+
+          <div class="stat-card">
+
+            <span>
+              No publicadas
+            </span>
+
+            <strong id="statHidden">
+              0
+            </strong>
+
+          </div>
+
+          <div class="stat-card">
+
+            <span>
+              Clientes
+            </span>
+
+            <strong id="statClients">
+              0
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        <div class="section-panel">
+
+          <h2>
+            Bienvenido al administrador
+          </h2>
+
+          <p class="section-description">
+            Desde aquí podrás administrar las propiedades y
+            mantener la información privada de los clientes
+            separada de la página pública.
+          </p>
+
+          <div class="actions">
+
+            <button
+              class="btn btn-green"
+              onclick="openPropertyModal()"
+            >
+              + Nueva propiedad
+            </button>
+
+            <button
+              class="btn btn-light"
+              onclick="showSection('clientsSection')"
+            >
+              Ver clientes
+            </button>
+
+          </div>
+
+          <div class="profile-mini">
+            <img src="gisel.jpg" alt="Gisel Cantillo Becerra">
+            <div>
+              <strong>Gisel Cantillo Becerra</strong>
+              <span>Gestión y dirección · Akasa Inmobiliaria</span>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- PROPIEDADES -->
+
+      <section
+        id="propertiesSection"
+        class="page-section"
+        style="display:none"
+      >
+
+        <div class="section-panel">
+
+          <div style="
+            display:flex;
+            justify-content:space-between;
+            gap:15px;
+            align-items:center;
+            flex-wrap:wrap;
+          ">
+
+            <div>
+
+              <h2>
+                Propiedades
+              </h2>
+
+              <p class="section-description">
+                Crea, edita, publica y administra
+                las propiedades de Akasa.
+              </p>
+
+            </div>
+
+            <button
+              class="btn btn-green"
+              onclick="openPropertyModal()"
+            >
+              + Nueva propiedad
+            </button>
+
+          </div>
+
+
+          <div class="filters">
+
+            <div>
+
+              <label>
+                Buscar
+              </label>
+
+              <input
+                id="filterSearch"
+                placeholder="Título, ubicación..."
+              >
+
+            </div>
+
+
+            <div>
+
+              <label>
+                Tag
+              </label>
+
+              <select id="filterTag">
+                <option value="">
+                  Todos
+                </option>
+              </select>
+
+            </div>
+
+
+            <div>
+
+              <label>
+                Precio mínimo
+              </label>
+
+              <input
+                id="filterMinPrice"
+                type="number"
+                placeholder="0"
+              >
+
+            </div>
+
+
+            <div>
+
+              <label>
+                Precio máximo
+              </label>
+
+              <input
+                id="filterMaxPrice"
+                type="number"
+                placeholder="Sin límite"
+              >
+
+            </div>
+
+
+            <div>
+
+              <label>
+                Estado
+              </label>
+
+              <select id="filterPublished">
+
+                <option value="">
+                  Todas
+                </option>
+
+                <option value="true">
+                  Publicadas
+                </option>
+
+                <option value="false">
+                  No publicadas
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="section-panel">
+
+          <div class="table-wrap">
+
+            <table>
+
+              <thead>
+
+                <tr>
+
+                  <th>
+                    Propiedad
+                  </th>
+
+                  <th>
+                    Precio
+                  </th>
+
+                  <th>
+                    Tags
+                  </th>
+
+                  <th>
+                    Cliente
+                  </th>
+
+                  <th>
+                    Estado
+                  </th>
+
+                  <th>
+                    Acciones
+                  </th>
+
+                </tr>
+
+              </thead>
+
+              <tbody id="propertiesTable"></tbody>
+
+            </table>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- CLIENTES -->
+
+      <section
+        id="clientsSection"
+        class="page-section"
+        style="display:none"
+      >
+
+        <div class="section-panel">
+
+          <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:15px;
+            flex-wrap:wrap;
+          ">
+
+            <div>
+
+              <h2>
+                Clientes / vendedores
+              </h2>
+
+              <p class="section-description">
+                Información privada visible únicamente
+                desde el administrador.
+              </p>
+
+            </div>
+
+            <button
+              class="btn btn-green"
+              onclick="openClientModal()"
+            >
+              + Nuevo cliente
+            </button>
+
+          </div>
+
+          <div
+            id="clientsGrid"
+            class="client-grid"
+          ></div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     PROPERTY MODAL
+     ========================================================= -->
+
+<div
+  id="propertyModal"
+  class="modal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h2 id="propertyModalTitle">
+        Nueva propiedad
+      </h2>
+
+      <button
+        class="close"
+        onclick="closeModal('propertyModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="propertyForm">
+
+      <input
+        type="hidden"
+        id="propertyId"
+      >
+
+      <div class="form-grid">
+
+        <div>
+
+          <label>
+            Título
+          </label>
+
+          <input
+            id="propertyTitle"
+            required
+            placeholder="Ej. Casa independiente en Playa"
+          >
+
+        </div>
+
+
+        <div>
+
+          <label>
+            Precio
+          </label>
+
+          <input
+            id="propertyPrice"
+            type="text"
+            required
+            placeholder="45000 o Consultar precio"
+            list="priceSuggestions"
+            autocomplete="off"
+          >
+          <datalist id="priceSuggestions">
+            <option value="Consultar precio"></option>
+          </datalist>
+          <small style="display:block;color:#716d66;margin-top:6px">
+            Puedes escribir una cifra o “Consultar precio”.
+          </small>
+
+        </div>
+
+
+        <div>
+
+          <label>
+            Ubicación
+          </label>
+
+          <input
+            id="propertyLocation"
+            placeholder="Playa, La Habana"
+          >
+
+        </div>
+
+
+        <div>
+
+          <label>
+            Cliente / vendedor
+          </label>
+
+          <select id="propertyClient">
+
+            <option value="">
+              Sin cliente asociado
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="full-width">
+
+          <label>
+            Descripción
+          </label>
+
+          <textarea
+            id="propertyDescription"
+          ></textarea>
+
+        </div>
+
+
+        <div class="full-width">
+
+          <label>
+            Historia
+          </label>
+
+          <textarea
+            id="propertyHistory"
+          ></textarea>
+
+        </div>
+
+
+        <div class="full-width">
+
+          <label>
+            Tags
+          </label>
+
+          <input
+            id="propertyTags"
+            placeholder="Ej. Playa, Villa, Lujo, 3 habitaciones"
+          >
+
+          <small style="color:#777">
+            Sepáralos por comas.
+          </small>
+
+        </div>
+
+
+        <div class="full-width">
+
+          <label>
+            Estado
+          </label>
+
+          <div class="check-row">
+
+            <input
+              id="propertyPublished"
+              type="checkbox"
+            >
+
+            <span>
+              Publicar esta propiedad en la web
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="full-width">
+
+          <label>
+            Fotos
+          </label>
+
+          <div class="upload-area" id="propertyDropzone">
+
+            <input
+              id="propertyImages"
+              type="file"
+              accept="image/*"
+              multiple
+              hidden
+            >
+
+            <div class="upload-icon"><i data-lucide="images"></i></div>
+            <div class="upload-title">Arrastra las fotos aquí</div>
+            <div class="upload-subtitle">o selecciónalas desde tu ordenador · hasta 50 MB por archivo</div>
+            <button type="button" class="btn btn-light btn-small upload-button" id="propertyPickButton">
+              <i data-lucide="folder-open"></i> Seleccionar fotografías
+            </button>
+            <div class="upload-progress" id="propertyUploadProgress">
+              <div class="progress-track"><div class="progress-bar" id="propertyProgressBar"></div></div>
+              <div class="upload-status" id="propertyUploadStatus">Preparando...</div>
+            </div>
+
+          </div>
+
+          <div
+            id="propertyImageGrid"
+            class="image-grid"
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn btn-light"
+          onclick="closeModal('propertyModal')"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-green"
+        >
+          Guardar propiedad
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================================
+     CLIENT MODAL
+     ========================================================= -->
+
+<div
+  id="clientModal"
+  class="modal"
+>
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+
+      <h2 id="clientModalTitle">
+        Nuevo cliente
+      </h2>
+
+      <button
+        class="close"
+        onclick="closeModal('clientModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <form id="clientForm">
+
+      <input
+        type="hidden"
+        id="clientId"
+      >
+
+      <input
+        type="hidden"
+        id="clientPhoto"
+      >
+
+      <div class="form-grid">
+
+        <div>
+
+          <label>
+            Nombre
+          </label>
+
+          <input
+            id="clientName"
+            required
+          >
+
+        </div>
+
+
+        <div>
+
+          <label>
+            Apellidos
+          </label>
+
+          <input
+            id="clientLastName"
+          >
+
+        </div>
+
+
+        <div>
+
+          <label>
+            Carnet de identidad
+          </label>
+
+          <input
+            id="clientCI"
+          >
+
+        </div>
+
+
+        <div>
+
+          <label>
+            Dirección
+          </label>
+
+          <input
+            id="clientAddress"
+          >
+
+        </div>
+
+
+        <div class="full-width">
+
+          <label>
+            Foto del cliente
+          </label>
+
+          <div class="upload-area" id="clientDropzone">
+            <input
+              id="clientPhotoFile"
+              type="file"
+              accept="image/*"
+              hidden
+            >
+            <div class="upload-icon"><i data-lucide="camera"></i></div>
+            <div class="upload-title">Selecciona la foto directamente</div>
+            <div class="upload-subtitle">JPG, PNG, WEBP · máximo 50 MB</div>
+            <button type="button" class="btn btn-light btn-small upload-button" id="clientPickButton">
+              <i data-lucide="upload"></i> Seleccionar foto
+            </button>
+            <div class="upload-progress" id="clientUploadProgress">
+              <div class="progress-track"><div class="progress-bar" id="clientProgressBar"></div></div>
+              <div class="upload-status" id="clientUploadStatus">Preparando...</div>
+            </div>
+          </div>
+          <div id="clientPhotoPreview"></div>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="btn btn-light"
+          onclick="closeModal('clientModal')"
+        >
+          Cancelar
+        </button>
+
+        <button
+          class="btn btn-green"
+          type="submit"
+        >
+          Guardar cliente
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div id="toast"></div>
+
+
+<script>
+
+/* =========================================================
+   CONFIGURACIÓN SUPABASE
+   ========================================================= */
+
+const SUPABASE_URL =
+  "https://vtexfogdrngdizkjonwu.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_jUUM8JeDOSpYJ26F7u290g_ou1dgRKL";
+
+const ADMIN_UUID =
+  "765a200d-94c1-4279-b910-c8e5753cbbf8";
+
+const STORAGE_BUCKET =
+  "property-images";
+
+const { createClient } = supabase;
+
+const db = createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+/* =========================================================
+   VARIABLES
+   ========================================================= */
+
+let properties = [];
+let clients = [];
+let currentImages = [];
+let currentEditingProperty = null;
+
+
+/* =========================================================
+   INICIO
+   ========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  async () => {
+
+    setupNavigation();
+
+    document
+      .getElementById("loginForm")
+      .addEventListener(
+        "submit",
+        login
+      );
+
+    document
+      .getElementById("logoutBtn")
+      .addEventListener(
+        "click",
+        logout
+      );
+
+    document
+      .getElementById("propertyForm")
+      .addEventListener(
+        "submit",
+        saveProperty
+      );
+
+    document
+      .getElementById("clientForm")
+      .addEventListener(
+        "submit",
+        saveClient
+      );
+
+    document
+      .getElementById("propertyImages")
+      .addEventListener(
+        "change",
+        previewSelectedImages
+      );
+
+    setupUploadZones();
+    lucide.createIcons();
+
+
+    document
+      .getElementById("filterSearch")
+      .addEventListener(
+        "input",
+        renderProperties
+      );
+
+    document
+      .getElementById("filterTag")
+      .addEventListener(
+        "change",
+        renderProperties
+      );
+
+    document
+      .getElementById("filterMinPrice")
+      .addEventListener(
+        "input",
+        renderProperties
+      );
+
+    document
+      .getElementById("filterMaxPrice")
+      .addEventListener(
+        "input",
+        renderProperties
+      );
+
+    document
+      .getElementById("filterPublished")
+      .addEventListener(
+        "change",
+        renderProperties
+      );
+
+
+    await checkSession();
+
+  }
+);
+
+
+/* =========================================================
+   AUTH
+   ========================================================= */
+
+async function checkSession(){
+
+  const {
+    data:{
+      session
+    }
+  } = await db.auth.getSession();
+
+
+  if(!session){
+
+    showLogin();
+
+    return;
+
+  }
+
+
+  if(session.user.id !== ADMIN_UUID){
+
+    await db.auth.signOut();
+
+    showLogin();
+
+    showLoginError(
+      "Este usuario no tiene permisos de administrador."
+    );
+
+    return;
+
+  }
+
+
+  showApp();
+
+}
+
+
+async function login(event){
+
+  event.preventDefault();
+
+
+  const email =
+    document
+      .getElementById("loginEmail")
+      .value
+      .trim();
+
+
+  const password =
+    document
+      .getElementById("loginPassword")
+      .value;
+
+
+  hideLoginError();
+
+
+  const {
+    data,
+    error
+  } =
+    await db.auth.signInWithPassword({
+
+      email,
+      password
+
+    });
+
+
+  if(error){
+
+    showLoginError(
+      "No se pudo iniciar sesión. Comprueba el correo y la contraseña."
+    );
+
+    return;
+
+  }
+
+
+  if(
+    !data.user ||
+    data.user.id !== ADMIN_UUID
+  ){
+
+    await db.auth.signOut();
+
+    showLoginError(
+      "Este usuario no es el administrador autorizado."
+    );
+
+    return;
+
+  }
+
+
+  showApp();
+
+}
+
+
+async function logout(){
+
+  await db.auth.signOut();
+
+  showLogin();
+
+}
+
+
+/* =========================================================
+   LOGIN UI
+   ========================================================= */
+
+function showLogin(){
+
+  document
+    .getElementById("loginScreen")
+    .style.display = "flex";
+
+
+  document
+    .getElementById("app")
+    .style.display = "none";
+
+}
+
+
+function showApp(){
+
+  document
+    .getElementById("loginScreen")
+    .style.display = "none";
+
+
+  document
+    .getElementById("app")
+    .style.display = "block";
+
+
+  loadEverything();
+
+}
+
+
+function showLoginError(message){
+
+  const box =
+    document.getElementById(
+      "loginError"
+    );
+
+  box.textContent = message;
+
+  box.style.display = "block";
+
+}
+
+
+function hideLoginError(){
+
+  document
+    .getElementById("loginError")
+    .style.display = "none";
+
+}
+
+
+/* =========================================================
+   NAVEGACIÓN
+   ========================================================= */
+
+function setupNavigation(){
+
+  document
+    .querySelectorAll(
+      ".nav-btn[data-section]"
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          showSection(
+            button.dataset.section
+          );
+
+        }
+      );
+
+    });
+
+}
+
+
+function showSection(sectionId){
+
+  document
+    .querySelectorAll(".page-section")
+    .forEach(section => {
+
+      section.style.display =
+        "none";
+
+    });
+
+
+  const section =
+    document.getElementById(
+      sectionId
+    );
+
+
+  if(section){
+
+    section.style.display =
+      "block";
+
+  }
+
+
+  document
+    .querySelectorAll(
+      ".nav-btn[data-section]"
+    )
+    .forEach(button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.section === sectionId
+      );
+
+    });
+
+
+  const titles = {
+
+    dashboardSection:
+      "Dashboard",
+
+    propertiesSection:
+      "Propiedades",
+
+    clientsSection:
+      "Clientes"
+
+  };
+
+
+  document
+    .getElementById("pageTitle")
+    .textContent =
+      titles[sectionId] ||
+      "Administración";
+
+
+  if(
+    sectionId ===
+    "propertiesSection"
+  ){
+
+    renderProperties();
+
+  }
+
+
+  if(
+    sectionId ===
+    "clientsSection"
+  ){
+
+    renderClients();
+
+  }
+
+}
+
+
+/* =========================================================
+   CARGAR DATOS
+   ========================================================= */
+
+async function loadEverything(){
+
+  await Promise.all([
+
+    loadProperties(),
+
+    loadClients()
+
+  ]);
+
+
+  updateStats();
+
+  populateClientSelect();
+
+  populateTagFilter();
+
+  renderProperties();
+
+  renderClients();
+
+}
+
+
+function normalizeList(value){
+  if(Array.isArray(value)){
+    return value.filter(Boolean).map(String);
+  }
+
+  if(typeof value === "string"){
+    const raw=value.trim();
+    if(!raw) return [];
+
+    try{
+      const parsed=JSON.parse(raw);
+      if(Array.isArray(parsed)){
+        return parsed.filter(Boolean).map(String);
+      }
+    }catch(error){
+      // Si no es JSON, se trata como una lista separada por comas.
+    }
+
+    return raw
+      .split(",")
+      .map(item=>item.trim())
+      .filter(Boolean);
+  }
+
+  return [];
+}
+
+function normalizePropertyRecord(property){
+  return {
+    ...property,
+    images: normalizeList(property?.images),
+    tags: normalizeList(property?.tags)
+  };
+}
+
+async function loadProperties(){
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("properties")
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
+
+  if(error){
+
+    console.error(error);
+
+    toast(
+      "No se pudieron cargar las propiedades."
+    );
+
+    return;
+
+  }
+
+
+  properties =
+    (data || []).map(normalizePropertyRecord);
+
+}
+
+
+async function loadClients(){
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("clientes")
+      .select("*")
+      .order(
+        "created_at",
+        {
+          ascending:false
+        }
+      );
+
+
+  if(error){
+
+    console.error(error);
+
+    toast(
+      "No se pudieron cargar los clientes."
+    );
+
+    return;
+
+  }
+
+
+  clients =
+    data || [];
+
+}
+
+
+/* =========================================================
+   ESTADÍSTICAS
+   ========================================================= */
+
+function updateStats(){
+
+  const published =
+    properties.filter(
+      p => p.published === true
+    ).length;
+
+
+  const hidden =
+    properties.filter(
+      p => p.published !== true
+    ).length;
+
+
+  document
+    .getElementById(
+      "statProperties"
+    )
+    .textContent =
+      properties.length;
+
+
+  document
+    .getElementById(
+      "statPublished"
+    )
+    .textContent =
+      published;
+
+
+  document
+    .getElementById(
+      "statHidden"
+    )
+    .textContent =
+      hidden;
+
+
+  document
+    .getElementById(
+      "statClients"
+    )
+    .textContent =
+      clients.length;
+
+}
+
+
+/* =========================================================
+   CLIENT SELECT
+   ========================================================= */
+
+function populateClientSelect(){
+
+  const select =
+    document.getElementById(
+      "propertyClient"
+    );
+
+
+  select.innerHTML =
+    `
+      <option value="">
+        Sin cliente asociado
+      </option>
+    `;
+
+
+  clients.forEach(
+    client => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        client.id;
+
+
+      option.textContent =
+        `
+          ${client.nombre || ""}
+          ${client.apellidos || ""}
+        `.trim();
+
+
+      select.appendChild(
+        option
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   TAG FILTER
+   ========================================================= */
+
+function populateTagFilter(){
+
+  const select =
+    document.getElementById(
+      "filterTag"
+    );
+
+
+  const tagSet =
+    new Set();
+
+
+  properties.forEach(
+    property => {
+
+      const tags =
+        Array.isArray(
+          property.tags
+        )
+          ? property.tags
+          : [];
+
+
+      tags.forEach(
+        tag => {
+
+          if(tag){
+
+            tagSet.add(
+              tag
+            );
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+
+  select.innerHTML =
+    `
+      <option value="">
+        Todos
+      </option>
+    `;
+
+
+  [
+    ...tagSet
+  ]
+    .sort()
+    .forEach(
+      tag => {
+
+        const option =
+          document.createElement(
+            "option"
+          );
+
+
+        option.value =
+          tag;
+
+
+        option.textContent =
+          tag;
+
+
+        select.appendChild(
+          option
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   RENDER PROPERTIES
+   ========================================================= */
+
+function renderProperties(){
+
+  const tbody =
+    document.getElementById(
+      "propertiesTable"
+    );
+
+
+  if(!tbody){
+
+    return;
+
+  }
+
+
+  const search =
+    document
+      .getElementById(
+        "filterSearch"
+      )
+      .value
+      .trim()
+      .toLowerCase();
+
+
+  const selectedTag =
+    document
+      .getElementById(
+        "filterTag"
+      )
+      .value;
+
+
+  const minPrice =
+    parseFloat(
+      document
+        .getElementById(
+          "filterMinPrice"
+        )
+        .value
+    );
+
+
+  const maxPrice =
+    parseFloat(
+      document
+        .getElementById(
+          "filterMaxPrice"
+        )
+        .value
+    );
+
+
+  const publishedFilter =
+    document
+      .getElementById(
+        "filterPublished"
+      )
+      .value;
+
+
+  let filtered =
+    [...properties];
+
+
+  if(search){
+
+    filtered =
+      filtered.filter(
+        property => {
+
+          const text = [
+
+            property.title,
+
+            property.location,
+
+            property.description
+
+          ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+
+          return text.includes(
+            search
+          );
+
+        }
+      );
+
+  }
+
+
+  if(selectedTag){
+
+    filtered =
+      filtered.filter(
+        property => {
+
+          const tags =
+            Array.isArray(
+              property.tags
+            )
+              ? property.tags
+              : [];
+
+
+          return tags.includes(
+            selectedTag
+          );
+
+        }
+      );
+
+  }
+
+
+  if(!isNaN(minPrice)){
+
+    filtered =
+      filtered.filter(
+        property =>
+          Number.isFinite(Number(property.price)) &&
+          String(property.price ?? "").trim() !== "" &&
+          Number(property.price) >= minPrice
+      );
+
+  }
+
+
+  if(!isNaN(maxPrice)){
+
+    filtered =
+      filtered.filter(
+        property =>
+          Number.isFinite(Number(property.price)) &&
+          String(property.price ?? "").trim() !== "" &&
+          Number(property.price) <= maxPrice
+      );
+
+  }
+
+
+  if(
+    publishedFilter !== ""
+  ){
+
+    const target =
+      publishedFilter ===
+      "true";
+
+
+    filtered =
+      filtered.filter(
+        property =>
+          property.published ===
+          target
+      );
+
+  }
+
+
+  if(
+    filtered.length === 0
+  ){
+
+    tbody.innerHTML = `
+
+      <tr>
+
+        <td
+          colspan="6"
+          style="
+            text-align:center;
+            padding:30px;
+            color:#777;
+          "
+        >
+          No se encontraron propiedades.
+        </td>
+
+      </tr>
+
+    `;
+
+    return;
+
+  }
+
+
+  tbody.innerHTML =
+    filtered
+      .map(
+        property => {
+
+          const tags =
+            Array.isArray(
+              property.tags
+            )
+              ? property.tags
+              : [];
+
+
+          const client =
+            clients.find(
+              c =>
+                c.id ===
+                property.cliente_id
+            );
+
+
+          const clientName =
+            client
+              ? `
+                  ${client.nombre || ""}
+                  ${client.apellidos || ""}
+                `.trim()
+              : "Sin cliente";
+
+
+          const imageCount =
+            normalizeList(property.images).length;
+
+
+          return `
+
+            <tr>
+
+              <td>
+
+                <div class="property-title">
+
+                  ${escapeHTML(
+                    property.title ||
+                    "Sin título"
+                  )}
+
+                </div>
+
+                <div class="property-location">
+
+                  ${escapeHTML(
+                    property.location ||
+                    "Sin ubicación"
+                  )}
+
+                  · ${imageCount} foto(s)
+
+                </div>
+
+              </td>
+
+
+              <td>
+
+                ${formatPrice(
+                  property.price
+                )}
+
+              </td>
+
+
+              <td>
+
+                <div class="tags">
+
+                  ${
+                    tags.length
+
+                    ? tags
+                        .map(
+                          tag =>
+                            `
+                              <span class="tag">
+                                ${escapeHTML(tag)}
+                              </span>
+                            `
+                        )
+                        .join("")
+
+                    : `
+                        <span style="color:#999">
+                          Sin tags
+                        </span>
+                      `
+                  }
+
+                </div>
+
+              </td>
+
+
+              <td>
+
+                ${escapeHTML(
+                  clientName
+                )}
+
+              </td>
+
+
+              <td>
+
+                ${
+                  property.published
+
+                  ? `
+                      <span class="badge badge-published">
+                        Publicada
+                      </span>
+                    `
+
+                  : `
+                      <span class="badge badge-hidden">
+                        No publicada
+                      </span>
+                    `
+                }
+
+              </td>
+
+
+              <td>
+
+                <div class="actions">
+
+                  <button
+                    type="button"
+                    class="btn btn-small btn-light edit-property-btn"
+                    data-id="${escapeAttribute(property.id)}"
+                  >
+                    Editar
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="btn btn-small ${
+                      property.published
+                        ? "btn-light"
+                        : "btn-green"
+                    } publish-property-btn"
+                    data-id="${escapeAttribute(property.id)}"
+                    data-value="${!property.published}"
+                  >
+
+                    ${
+                      property.published
+                        ? "Despublicar"
+                        : "Publicar"
+                    }
+
+                  </button>
+
+
+                  <button
+                    type="button"
+                    class="btn btn-small btn-danger delete-property-btn"
+                    data-id="${escapeAttribute(property.id)}"
+                  >
+                    Eliminar
+                  </button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          `;
+
+        }
+      )
+      .join("");
+
+
+  /* =======================================================
+     AQUÍ ESTÁ LA CORRECCIÓN DEL BOTÓN EDITAR
+     ======================================================= */
+
+  document
+    .querySelectorAll(
+      ".edit-property-btn"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const id =
+              button.dataset.id;
+
+
+            editProperty(id);
+
+          }
+        );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".publish-property-btn"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const id =
+              button.dataset.id;
+
+
+            const value =
+              button.dataset.value ===
+              "true";
+
+
+            togglePublished(
+              id,
+              value
+            );
+
+          }
+        );
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".delete-property-btn"
+    )
+    .forEach(
+      button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            const id =
+              button.dataset.id;
+
+
+            deleteProperty(id);
+
+          }
+        );
+
+      }
+    );
+
+}
+
+
+/* =========================================================
+   NUEVA PROPIEDAD
+   ========================================================= */
+
+function openPropertyModal(){
+
+  currentEditingProperty =
+    null;
+
+
+  currentImages =
+    [];
+
+
+  document
+    .getElementById(
+      "propertyModalTitle"
+    )
+    .textContent =
+      "Nueva propiedad";
+
+
+  document
+    .getElementById(
+      "propertyId"
+    )
+    .value =
+      "";
+
+
+  document
+    .getElementById(
+      "propertyTitle"
+    )
+    .value =
+      "";
+
+
+  document
+    .getElementById(
+      "propertyPrice"
+    )
+    .value =
+      "";
+
+
+  document
+    .getElementById(
+      "propertyLocation"
+    )
+    .value =
+      "";
+
+
+  document
+    .getElementById(
+      "propertyDescription"
+    )
+    .value =
+      "";
+
+
+  document
+    .getElementById(
+      "propertyHistory"
+    )
+    .value =
+      "";
+
+
+  document
+    .getElementById(
+      "propertyTags"
+    )
+    .value =
+      "";
+
+
+  document
+    .getElementById(
+      "propertyPublished"
+    )
+    .checked =
+      false;
+
+
+  document
+    .getElementById(
+      "propertyClient"
+    )
+    .value =
+      "";
+
+
+  document
+    .getElementById(
+      "propertyImages"
+    )
+    .value =
+      "";
+
+  document.getElementById("propertyUploadProgress").style.display="none";
+
+
+  renderCurrentImages();
+
+
+  const modal =
+    document.getElementById(
+      "propertyModal"
+    );
+
+
+  modal.style.display =
+    "block";
+
+
+  requestAnimationFrame(
+    () => {
+      modal.classList.add(
+        "show"
+      );
+    }
+  );
+
+}
+
+
+/* =========================================================
+   EDITAR PROPIEDAD
+   ========================================================= */
+
+function editProperty(id){
+
+  console.log(
+    "Editando propiedad:",
+    id
+  );
+
+
+  const property =
+    properties.find(
+      p => String(p.id) === String(id)
+    );
+
+
+  if(!property){
+
+    console.error(
+      "No se encontró la propiedad:",
+      id
+    );
+
+    toast(
+      "No se encontró la propiedad."
+    );
+
+    return;
+
+  }
+
+
+  currentEditingProperty =
+    property;
+
+
+  currentImages =
+    normalizeList(property.images);
+
+
+  document
+    .getElementById(
+      "propertyModalTitle"
+    )
+    .textContent =
+      "Editar propiedad";
+
+
+  document
+    .getElementById(
+      "propertyId"
+    )
+    .value =
+      property.id;
+
+
+  document
+    .getElementById(
+      "propertyTitle"
+    )
+    .value =
+      property.title || "";
+
+
+  document
+    .getElementById(
+      "propertyPrice"
+    )
+    .value =
+      property.price ?? "";
+
+
+  document
+    .getElementById(
+      "propertyLocation"
+    )
+    .value =
+      property.location || "";
+
+
+  document
+    .getElementById(
+      "propertyDescription"
+    )
+    .value =
+      property.description || "";
+
+
+  document
+    .getElementById(
+      "propertyHistory"
+    )
+    .value =
+      property.history || "";
+
+
+  document
+    .getElementById(
+      "propertyTags"
+    )
+    .value =
+      Array.isArray(
+        property.tags
+      )
+        ? property.tags.join(
+            ", "
+          )
+        : "";
+
+
+  document
+    .getElementById(
+      "propertyPublished"
+    )
+    .checked =
+      property.published ===
+      true;
+
+
+  document
+    .getElementById(
+      "propertyClient"
+    )
+    .value =
+      property.cliente_id || "";
+
+
+  document
+    .getElementById(
+      "propertyImages"
+    )
+    .value =
+      "";
+
+
+  renderCurrentImages();
+
+
+  const modal =
+    document.getElementById(
+      "propertyModal"
+    );
+
+
+  modal.style.display =
+    "block";
+
+
+  requestAnimationFrame(
+    () => {
+      modal.classList.add(
+        "show"
+      );
+    }
+  );
+
+}
+
+
+/* =========================================================
+   GUARDAR PROPIEDAD
+   ========================================================= */
+
+async function saveProperty(event){
+
+  event.preventDefault();
+
+
+  const button =
+    event.submitter;
+
+
+  if(button){
+
+    button.disabled =
+      true;
+
+    button.textContent =
+      "Guardando...";
+
+  }
+
+
+  const id =
+    document
+      .getElementById(
+        "propertyId"
+      )
+      .value;
+
+
+  const title =
+    document
+      .getElementById(
+        "propertyTitle"
+      )
+      .value
+      .trim();
+
+
+  const price =
+    document
+      .getElementById("propertyPrice")
+      .value
+      .trim();
+
+
+  const location =
+    document
+      .getElementById(
+        "propertyLocation"
+      )
+      .value
+      .trim();
+
+
+  const description =
+    document
+      .getElementById(
+        "propertyDescription"
+      )
+      .value
+      .trim();
+
+
+  const history =
+    document
+      .getElementById(
+        "propertyHistory"
+      )
+      .value
+      .trim();
+
+
+  const tags =
+    document
+      .getElementById(
+        "propertyTags"
+      )
+      .value
+      .split(",")
+      .map(
+        tag => tag.trim()
+      )
+      .filter(Boolean);
+
+
+  const published =
+    document
+      .getElementById(
+        "propertyPublished"
+      )
+      .checked;
+
+
+  const cliente_id =
+    document
+      .getElementById(
+        "propertyClient"
+      )
+      .value ||
+      null;
+
+
+  const files =
+    document
+      .getElementById(
+        "propertyImages"
+      )
+      .files;
+
+
+  let uploadedImages =
+    [];
+
+
+  try{
+
+    if(files.length){
+
+      uploadedImages =
+        await uploadImages(
+          files
+        );
+
+
+      currentImages =
+        [
+          ...currentImages,
+          ...uploadedImages
+        ];
+
+    }
+
+
+    const payload = {
+
+      title,
+
+      price:
+        price || null,
+
+      description,
+
+      location,
+
+      history,
+
+      published,
+
+      tags,
+
+      images:
+        normalizeList(currentImages),
+
+      cliente_id
+
+    };
+
+
+    let error;
+
+
+    if(id){
+
+      const result =
+        await db
+          .from(
+            "properties"
+          )
+          .update(
+            payload
+          )
+          .eq(
+            "id",
+            id
+          );
+
+
+      error =
+        result.error;
+
+    }else{
+
+      const result =
+        await db
+          .from(
+            "properties"
+          )
+          .insert(
+            payload
+          );
+
+
+      error =
+        result.error;
+
+    }
+
+
+    if(error){
+
+      throw error;
+
+    }
+
+
+    toast(
+      id
+        ? "Propiedad actualizada."
+        : "Propiedad creada correctamente."
+    );
+
+
+    closeModal(
+      "propertyModal"
+    );
+
+
+    await loadEverything();
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+
+    toast(
+      "No se pudo guardar la propiedad: " +
+      (
+        error.message ||
+        "Error desconocido"
+      )
+    );
+
+  }finally{
+
+    if(button){
+
+      button.disabled =
+        false;
+
+      button.textContent =
+        "Guardar propiedad";
+
+    }
+
+  }
+
+}
+
+
+/* =========================================================
+   SUBIR IMÁGENES
+   ========================================================= */
+
+async function uploadImages(files){
+  const uploadedPaths=[];
+  const list=Array.from(files);
+  for(let i=0;i<list.length;i++){
+    const file=list[i];
+    validateImageFile(file);
+    setUploadProgress("property",Math.round((i/list.length)*100),`Subiendo ${i+1} de ${list.length}: ${file.name}`);
+    uploadedPaths.push(await uploadSingleImage(file,"property"));
+    setUploadProgress("property",Math.round(((i+1)/list.length)*100),`Foto ${i+1} de ${list.length} subida`);
+  }
+  return uploadedPaths;
+}
+
+
+/* =========================================================
+   PREVISUALIZACIÓN DE FOTOS
+   ========================================================= */
+
+function previewSelectedImages(){
+
+  const files =
+    document
+      .getElementById(
+        "propertyImages"
+      )
+      .files;
+
+
+  const grid =
+    document.getElementById(
+      "propertyImageGrid"
+    );
+
+
+  renderCurrentImages();
+
+
+  for(
+    const file of files
+  ){
+
+    const url =
+      URL.createObjectURL(
+        file
+      );
+
+
+    const div =
+      document.createElement(
+        "div"
+      );
+
+
+    div.className =
+      "image-item";
+
+
+    div.innerHTML =
+      `
+        <img
+          src="${url}"
+          alt=""
+        >
+      `;
+
+
+    grid.appendChild(
+      div
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   FOTOS ACTUALES
+   ========================================================= */
+
+function renderCurrentImages(){
+
+  const grid =
+    document.getElementById(
+      "propertyImageGrid"
+    );
+
+
+  if(!grid){
+
+    return;
+
+  }
+
+
+  grid.innerHTML =
+    "";
+
+
+  currentImages.forEach(
+    (
+      path,
+      index
+    ) => {
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      div.className =
+        "image-item";
+
+
+      const url =
+        publicImageUrl(
+          path,
+          "property"
+        );
+
+
+      div.innerHTML =
+        `
+
+          <img
+            data-admin-storage-path="${escapeAttribute(path)}"
+            src="${escapeAttribute(url)}"
+            alt="Foto de propiedad"
+          >
+
+          <button
+            type="button"
+            class="image-remove"
+            onclick="removeCurrentImage(${index})"
+            title="Eliminar foto"
+          >
+            ×
+          </button>
+
+        `;
+
+
+      grid.appendChild(
+        div
+      );
+
+    }
+  );
+
+  hydrateAdminStorageImages(grid,"property");
+
+}
+
+
+async function removeCurrentImage(index){
+
+  const path =
+    currentImages[index];
+
+
+  if(!path){
+
+    return;
+
+  }
+
+
+  if(
+    !confirm(
+      "¿Eliminar esta foto?"
+    )
+  ){
+
+    return;
+
+  }
+
+
+  try{
+
+    const cleanPath =
+      normalizeStoragePath(
+        path,
+        "property"
+      );
+
+    if(cleanPath){
+      const {
+        error
+      } =
+        await db.storage
+          .from(
+            STORAGE_BUCKET
+          )
+          .remove(
+            [cleanPath]
+          );
+
+      if(error){
+        throw error;
+      }
+    }
+
+
+    currentImages.splice(
+      index,
+      1
+    );
+
+
+    renderCurrentImages();
+
+
+    toast(
+      "Foto eliminada."
+    );
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+
+    toast(
+      "No se pudo eliminar la foto."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   URL PÚBLICA DE FOTO
+   ========================================================= */
+
+function normalizeStoragePath(path, defaultFolder=""){
+  if(!path) return "";
+
+  const raw=String(path).trim();
+  if(!raw) return "";
+
+  // Acepta tanto rutas internas como URLs completas de Supabase Storage.
+  if(/^https?:\/\//i.test(raw)){
+    try{
+      const url=new URL(raw);
+      const marker="/storage/v1/object/";
+      const index=url.pathname.indexOf(marker);
+
+      if(index !== -1){
+        let rest=url.pathname.slice(index + marker.length);
+        rest=rest.replace(/^\/(?:public|sign|authenticated)\//,"");
+
+        const bucketPrefix=STORAGE_BUCKET+"/";
+        if(rest.startsWith(bucketPrefix)){
+          rest=rest.slice(bucketPrefix.length);
+        }
+
+        return decodeURIComponent(rest);
+      }
+    }catch(error){
+      console.warn("URL de Storage no válida:",raw,error);
+    }
+
+    return "";
+  }
+
+  let clean=raw.replace(/^\/+/,"");
+
+  const bucketPrefix=STORAGE_BUCKET+"/";
+  if(clean.startsWith(bucketPrefix)){
+    clean=clean.slice(bucketPrefix.length);
+  }
+
+  return clean;
+}
+
+function storagePathCandidates(path, defaultFolder="property"){
+  const clean=normalizeStoragePath(path,defaultFolder);
+  if(!clean) return [];
+
+  const candidates=[];
+  const add=value=>{
+    if(value && !candidates.includes(value)){
+      candidates.push(value);
+    }
+  };
+
+  add(clean);
+
+  if(defaultFolder && !clean.includes("/")){
+    add(
+      defaultFolder.replace(/^\/+|\/+$/g,"") +
+      "/" +
+      clean
+    );
+  }
+
+  // Compatibilidad con rutas antiguas.
+  if(!clean.includes("/")){
+    add("properties/"+clean);
+  }
+
+  if(clean.startsWith("properties/")){
+    add("property/"+clean.slice("properties/".length));
+  }
+
+  if(clean.startsWith("property/")){
+    add("properties/"+clean.slice("property/".length));
+  }
+
+  return candidates;
+}
+
+function publicImageUrl(path, defaultFolder="property"){
+  if(!path) return "";
+
+  const raw=String(path).trim();
+  if(/^https?:\/\//i.test(raw)){
+    return raw;
+  }
+
+  const candidates=storagePathCandidates(raw,defaultFolder);
+  const candidate=candidates[0];
+
+  if(!candidate) return "";
+
+  return SUPABASE_URL +
+    "/storage/v1/object/public/" +
+    STORAGE_BUCKET +
+    "/" +
+    candidate
+      .split("/")
+      .map(encodeURIComponent)
+      .join("/");
+}
+
+const adminImageUrlCache = new Map();
+
+async function resolveAdminStorageImage(path, defaultFolder="property"){
+  if(!path) return "";
+
+  const raw=String(path).trim();
+  if(!raw) return "";
+
+  if(raw.startsWith("blob:") || raw.startsWith("data:")){
+    return raw;
+  }
+
+  if(/^https?:\/\//i.test(raw) && !normalizeStoragePath(raw,defaultFolder)){
+    return raw;
+  }
+
+  const candidates=storagePathCandidates(raw,defaultFolder);
+  if(!candidates.length) return "";
+
+  const cacheKey=defaultFolder+"|"+candidates.join("|");
+
+  if(adminImageUrlCache.has(cacheKey)){
+    return adminImageUrlCache.get(cacheKey);
+  }
+
+  // 1) URL pública.
+  for(const clean of candidates){
+    const publicUrl=publicImageUrl(clean,defaultFolder);
+
+    try{
+      const response=await fetch(
+        publicUrl,
+        {
+          method:"GET",
+          cache:"no-store"
+        }
+      );
+
+      if(response.ok){
+        const blob=await response.blob();
+
+        if(blob && blob.size>0){
+          const objectUrl=URL.createObjectURL(blob);
+          adminImageUrlCache.set(cacheKey,objectUrl);
+          return objectUrl;
+        }
+      }
+    }catch(error){
+      console.warn(
+        "URL pública no disponible:",
+        clean,
+        error
+      );
+    }
+  }
+
+  // 2) Descarga autenticada.
+  for(const clean of candidates){
+    try{
+      const {
+        data,
+        error
+      } =
+        await db.storage
+          .from(STORAGE_BUCKET)
+          .download(clean);
+
+      if(!error && data && data.size>0){
+        const objectUrl=URL.createObjectURL(data);
+        adminImageUrlCache.set(cacheKey,objectUrl);
+        return objectUrl;
+      }
+    }catch(error){
+      console.warn(
+        "Error descargando imagen:",
+        clean,
+        error
+      );
+    }
+  }
+
+  // 3) URL firmada como último recurso.
+  for(const clean of candidates){
+    try{
+      const {
+        data,
+        error
+      } =
+        await db.storage
+          .from(STORAGE_BUCKET)
+          .createSignedUrl(
+            clean,
+            3600
+          );
+
+      if(!error && data?.signedUrl){
+        adminImageUrlCache.set(
+          cacheKey,
+          data.signedUrl
+        );
+
+        return data.signedUrl;
+      }
+    }catch(error){
+      console.warn(
+        "No se pudo crear URL firmada:",
+        clean,
+        error
+      );
+    }
+  }
+
+  console.error(
+    "No se encontró la imagen en Storage:",
+    raw,
+    candidates
+  );
+
+  return "";
+}
+
+async function hydrateAdminStorageImages(
+  root=document,
+  defaultFolder="property"
+){
+  const elements=[
+    ...root.querySelectorAll(
+      "img[data-admin-storage-path]"
+    )
+  ];
+
+  await Promise.all(
+    elements.map(
+      async img=>{
+        const value=
+          img.dataset.adminStoragePath;
+
+        if(!value) return;
+
+        const src=
+          await resolveAdminStorageImage(
+            value,
+            defaultFolder
+          );
+
+        if(src){
+          img.src=src;
+          img.classList.add(
+            "storage-image-loaded"
+          );
+          img.classList.remove(
+            "storage-image-error"
+          );
+        }else{
+          img.removeAttribute("src");
+          img.classList.add(
+            "storage-image-error"
+          );
+        }
+      }
+    )
+  );
+}
+
+/* =========================================================
+   PUBLICAR / DESPUBLICAR
+   ========================================================= */
+
+async function togglePublished(
+  id,
+  value
+){
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "properties"
+      )
+      .update({
+        published:
+          value
+      })
+      .eq(
+        "id",
+        id
+      );
+
+
+  if(error){
+
+    console.error(
+      error
+    );
+
+
+    toast(
+      "No se pudo cambiar el estado."
+    );
+
+
+    return;
+
+  }
+
+
+  toast(
+    value
+      ? "Propiedad publicada."
+      : "Propiedad despublicada."
+  );
+
+
+  await loadEverything();
+
+}
+
+
+/* =========================================================
+   ELIMINAR PROPIEDAD
+   ========================================================= */
+
+async function deleteProperty(id){
+
+  const property =
+    properties.find(
+      p =>
+        String(p.id) ===
+        String(id)
+    );
+
+
+  if(!property){
+
+    return;
+
+  }
+
+
+  const confirmed =
+    confirm(
+      `
+        ¿Eliminar definitivamente
+        "${property.title}"?
+
+        También se eliminarán sus
+        fotografías del Storage.
+      `
+    );
+
+
+  if(!confirmed){
+
+    return;
+
+  }
+
+
+  try{
+
+    const images =
+      Array.isArray(
+        property.images
+      )
+        ? property.images
+        : [];
+
+
+    if(images.length){
+
+      const storagePaths =
+        images
+          .map(
+            image =>
+              normalizeStoragePath(
+                image,
+                "property"
+              )
+          )
+          .filter(Boolean);
+
+      if(storagePaths.length){
+        const {
+          error: storageError
+        } =
+          await db.storage
+            .from(
+              STORAGE_BUCKET
+            )
+            .remove(
+              storagePaths
+            );
+
+        if(storageError){
+          console.warn(
+            "No se pudieron eliminar todas las fotos:",
+            storageError
+          );
+        }
+      }
+
+    }
+
+
+    const {
+      error
+    } =
+      await db
+        .from(
+          "properties"
+        )
+        .delete()
+        .eq(
+          "id",
+          id
+        );
+
+
+    if(error){
+
+      throw error;
+
+    }
+
+
+    toast(
+      "Propiedad eliminada."
+    );
+
+
+    await loadEverything();
+
+  }catch(error){
+
+    console.error(
+      error
+    );
+
+
+    toast(
+      "No se pudo eliminar la propiedad."
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   CLIENTES
+   ========================================================= */
+
+function renderClients(){
+
+  const grid =
+    document.getElementById(
+      "clientsGrid"
+    );
+
+
+  if(!grid){
+
+    return;
+
+  }
+
+
+  if(
+    clients.length === 0
+  ){
+
+    grid.innerHTML =
+      `
+        <div style="color:#777">
+          Todavía no hay clientes registrados.
+        </div>
+      `;
+
+
+    return;
+
+  }
+
+
+  grid.innerHTML =
+    clients
+      .map(
+        client => {
+
+          const fullName =
+            `
+              ${client.nombre || ""}
+              ${client.apellidos || ""}
+            `.trim();
+
+
+          const relatedProperties =
+            properties.filter(
+              property =>
+                property.cliente_id ===
+                client.id
+            ).length;
+
+
+          return `
+
+            <div class="client-card">
+
+              ${
+                client.foto_url
+
+                ? `
+                    <img
+                      class="client-photo"
+                      data-admin-storage-path="${escapeAttribute(client.foto_url)}"
+                      src="${escapeAttribute(
+                        publicImageUrl(client.foto_url,"clients")
+                      )}"
+                      alt=""
+                    >
+                  `
+
+                : `
+                    <div
+                      class="client-photo"
+                      style="
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                      "
+                    >
+                      👤
+                    </div>
+                  `
+              }
+
+
+              <h3>
+
+                ${escapeHTML(
+                  fullName ||
+                  "Sin nombre"
+                )}
+
+              </h3>
+
+
+              <p>
+
+                <strong>
+                  CI:
+                </strong>
+
+                ${escapeHTML(
+                  client.carnet_identidad ||
+                  "No especificado"
+                )}
+
+              </p>
+
+
+              <p>
+
+                <strong>
+                  Dirección:
+                </strong>
+
+                ${escapeHTML(
+                  client.direccion ||
+                  "No especificada"
+                )}
+
+              </p>
+
+
+              <p>
+
+                <strong>
+                  Propiedades:
+                </strong>
+
+                ${relatedProperties}
+
+              </p>
+
+
+              <div
+                class="actions"
+                style="margin-top:12px"
+              >
+
+                <button
+                  class="btn btn-small btn-light"
+                  onclick="editClient('${escapeAttribute(client.id)}')"
+                >
+                  Editar
+                </button>
+
+
+                <button
+                  class="btn btn-small btn-danger"
+                  onclick="deleteClient('${escapeAttribute(client.id)}')"
+                >
+                  Eliminar
+                </button>
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+  hydrateAdminStorageImages(
+    grid,
+    "clients"
+  );
+
+}
+
+
+/* =========================================================
+   NUEVO CLIENTE
+   ========================================================= */
+
+function openClientModal(){
+
+  document
+    .getElementById(
+      "clientModalTitle"
+    )
+    .textContent =
+      "Nuevo cliente";
+
+
+  document
+    .getElementById(
+      "clientId"
+    )
+    .value =
+      "";
+
+
+  document
+    .getElementById(
+      "clientName"
+    )
+    .value =
+      "";
+
+
+  document
+    .getElementById(
+      "clientLastName"
+    )
+    .value =
+      "";
+
+
+  document
+    .getElementById(
+      "clientCI"
+    )
+    .value =
+      "";
+
+
+  document
+    .getElementById(
+      "clientAddress"
+    )
+    .value =
+      "";
+
+
+  document
+    .getElementById(
+      "clientPhoto"
+    )
+    .value =
+      "";
+
+  document.getElementById("clientPhotoFile").value = "";
+  document.getElementById("clientPhotoPreview").innerHTML = "";
+  document.getElementById("clientUploadProgress").style.display = "none";
+
+
+  const modal =
+    document.getElementById(
+      "clientModal"
+    );
+
+
+  modal.style.display =
+    "block";
+
+
+  requestAnimationFrame(
+    () => {
+
+      modal.classList.add(
+        "show"
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   EDITAR CLIENTE
+   ========================================================= */
+
+function editClient(id){
+
+  const client =
+    clients.find(
+      c =>
+        String(c.id) ===
+        String(id)
+    );
+
+
+  if(!client){
+
+    return;
+
+  }
+
+
+  document
+    .getElementById(
+      "clientModalTitle"
+    )
+    .textContent =
+      "Editar cliente";
+
+
+  document
+    .getElementById(
+      "clientId"
+    )
+    .value =
+      client.id;
+
+
+  document
+    .getElementById(
+      "clientName"
+    )
+    .value =
+      client.nombre ||
+      "";
+
+
+  document
+    .getElementById(
+      "clientLastName"
+    )
+    .value =
+      client.apellidos ||
+      "";
+
+
+  document
+    .getElementById(
+      "clientCI"
+    )
+    .value =
+      client.carnet_identidad ||
+      "";
+
+
+  document
+    .getElementById(
+      "clientAddress"
+    )
+    .value =
+      client.direccion ||
+      "";
+
+
+  document
+    .getElementById(
+      "clientPhoto"
+    )
+    .value =
+      client.foto_url ||
+      "";
+
+  document.getElementById("clientPhotoFile").value = "";
+  renderClientPhotoPreview(client.foto_url || "");
+
+
+  const modal =
+    document.getElementById(
+      "clientModal"
+    );
+
+
+  modal.style.display =
+    "block";
+
+
+  requestAnimationFrame(
+    () => {
+
+      modal.classList.add(
+        "show"
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   GUARDAR CLIENTE
+   ========================================================= */
+
+async function saveClient(event){
+
+  event.preventDefault();
+
+  const button = event.submitter;
+  if(button){ button.disabled=true; button.textContent="Guardando..."; }
+
+  const id = document.getElementById("clientId").value;
+  const oldPhoto = document.getElementById("clientPhoto").value.trim();
+  const fileInput = document.getElementById("clientPhotoFile");
+  const file = fileInput.files[0] || null;
+  let uploadedPath = null;
+
+  const payload = {
+    nombre: document.getElementById("clientName").value.trim(),
+    apellidos: document.getElementById("clientLastName").value.trim(),
+    carnet_identidad: document.getElementById("clientCI").value.trim(),
+    direccion: document.getElementById("clientAddress").value.trim(),
+    foto_url: oldPhoto
+  };
+
+  try{
+    if(file){
+      validateImageFile(file);
+      setUploadProgress("client",0,"Subiendo foto...");
+      uploadedPath = await uploadSingleImage(file,"clients");
+      payload.foto_url = uploadedPath;
+      setUploadProgress("client",100,"Foto subida correctamente.");
+    }
+
+    let error;
+    if(id){
+      const result = await db.from("clientes").update(payload).eq("id",id);
+      error=result.error;
+    }else{
+      const result = await db.from("clientes").insert(payload);
+      error=result.error;
+    }
+
+    if(error) throw error;
+
+    if(file && oldPhoto){
+      await removeStorageFile(
+        oldPhoto,
+        "clients"
+      );
+    }
+
+    toast(id ? "Cliente actualizado." : "Cliente creado correctamente.");
+    closeModal("clientModal");
+    await loadEverything();
+
+  }catch(error){
+    console.error(error);
+    if(uploadedPath){ await removeStorageFile(uploadedPath,"clients"); }
+    toast("No se pudo guardar el cliente: " + (error.message || "Error desconocido"));
+  }finally{
+    if(button){ button.disabled=false; button.textContent="Guardar cliente"; }
+  }
+
+}
+
+
+/* =========================================================
+   SISTEMA DE SUBIDA DE ARCHIVOS
+   ========================================================= */
+
+function setupUploadZones(){
+  const propertyInput=document.getElementById("propertyImages");
+  const propertyZone=document.getElementById("propertyDropzone");
+  const propertyButton=document.getElementById("propertyPickButton");
+  const clientInput=document.getElementById("clientPhotoFile");
+  const clientZone=document.getElementById("clientDropzone");
+  const clientButton=document.getElementById("clientPickButton");
+
+  propertyButton.addEventListener("click",()=>propertyInput.click());
+  clientButton.addEventListener("click",()=>clientInput.click());
+
+  clientInput.addEventListener("change",()=>{
+    const file=clientInput.files[0];
+    if(file){
+      try{ validateImageFile(file); renderClientFilePreview(file); }
+      catch(error){ clientInput.value=""; toast(error.message); }
+    }
+  });
+
+  [
+    [propertyZone,propertyInput,files=>handleDroppedPropertyFiles(files)],
+    [clientZone,clientInput,files=>handleDroppedClientFile(files)]
+  ].forEach(([zone,input,handler])=>{
+    ["dragenter","dragover"].forEach(type=>zone.addEventListener(type,e=>{
+      e.preventDefault(); e.stopPropagation(); zone.classList.add("dragover");
+    }));
+    ["dragleave","drop"].forEach(type=>zone.addEventListener(type,e=>{
+      e.preventDefault(); e.stopPropagation(); zone.classList.remove("dragover");
+    }));
+    zone.addEventListener("drop",e=>handler(e.dataTransfer.files));
+  });
+}
+
+function handleDroppedPropertyFiles(files){
+  const input=document.getElementById("propertyImages");
+  const valid=Array.from(files).filter(file=>{
+    try{validateImageFile(file);return true}catch(error){toast(error.message);return false;}
+  });
+  if(!valid.length)return;
+  const dt=new DataTransfer();
+  valid.forEach(file=>dt.items.add(file));
+  input.files=dt.files;
+  previewSelectedImages();
+}
+
+function handleDroppedClientFile(files){
+  const file=files[0];
+  if(!file)return;
+  try{
+    validateImageFile(file);
+    const dt=new DataTransfer(); dt.items.add(file);
+    const input=document.getElementById("clientPhotoFile"); input.files=dt.files;
+    renderClientFilePreview(file);
+  }catch(error){toast(error.message);}
+}
+
+function validateImageFile(file){
+  if(!file.type.startsWith("image/")) throw new Error("Solo se permiten archivos de imagen.");
+  if(file.size>50*1024*1024) throw new Error(`La imagen "${file.name}" supera los 50 MB permitidos.`);
+}
+
+function renderClientFilePreview(file){
+  const box=document.getElementById("clientPhotoPreview");
+  const url=URL.createObjectURL(file);
+  box.innerHTML=`<div class="client-upload-preview"><img src="${url}" alt="Vista previa"><div class="preview-meta"><strong>${escapeHTML(file.name)}</strong><div class="file-name">${(file.size/1024/1024).toFixed(2)} MB · lista para subir al Storage</div></div></div>`;
+}
+
+function renderClientPhotoPreview(path){
+  const box=document.getElementById("clientPhotoPreview");
+  if(!path){box.innerHTML="";return;}
+  box.innerHTML=`
+    <div class="client-upload-preview">
+      <img
+        data-admin-storage-path="${escapeAttribute(path)}"
+        src="${escapeAttribute(publicImageUrl(path,"clients"))}"
+        alt="Foto actual"
+      >
+      <div class="preview-meta">
+        <strong>Foto actual</strong>
+        <div class="file-name">
+          Selecciona otra para reemplazarla
+        </div>
+      </div>
+    </div>
+  `;
+
+  hydrateAdminStorageImages(
+    box,
+    "clients"
+  );
+}
+
+function setUploadProgress(type,percent,message){
+  const progress=document.getElementById(type+"UploadProgress");
+  const bar=document.getElementById(type+"ProgressBar");
+  const status=document.getElementById(type+"UploadStatus");
+  if(!progress||!bar||!status)return;
+  progress.style.display="block"; bar.style.width=Math.max(0,Math.min(100,percent))+"%"; status.textContent=message;
+}
+
+async function uploadSingleImage(file,folder){
+  validateImageFile(file);
+  const extension=(file.name.split(".").pop()||"jpg").toLowerCase().replace(/[^a-z0-9]/g,"") || "jpg";
+  const base=file.name.replace(/\.[^/.]+$/,"" ).replace(/[^a-zA-Z0-9_-]/g,"-").substring(0,60)||"imagen";
+  const path=`${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}-${base}.${extension}`;
+  const {error}=await db.storage.from(STORAGE_BUCKET).upload(path,file,{cacheControl:"3600",upsert:false});
+  if(error)throw error;
+  return path;
+}
+
+async function removeStorageFile(path, defaultFolder=""){
+  if(!path || String(path).startsWith("http")) return;
+  const clean=normalizeStoragePath(path,defaultFolder);
+  if(!clean) return;
+  const {error}=await db.storage.from(STORAGE_BUCKET).remove([clean]);
+  if(error) console.warn("No se pudo eliminar archivo de Storage",clean,error);
+}
+
+
+/* =========================================================
+   ELIMINAR CLIENTE
+   ========================================================= */
+
+async function deleteClient(id){
+
+  const related =
+    properties.filter(
+      property =>
+        property.cliente_id ===
+        id
+    );
+
+
+  if(related.length){
+
+    alert(
+      "Este cliente está asociado a " +
+      related.length +
+      " propiedad(es).\n\n" +
+      "Primero debes quitar el cliente de esas propiedades."
+    );
+
+
+    return;
+
+  }
+
+
+  if(
+    !confirm(
+      "¿Eliminar este cliente?"
+    )
+  ){
+
+    return;
+
+  }
+
+
+  const {
+    error
+  } =
+    await db
+      .from(
+        "clientes"
+      )
+      .delete()
+      .eq(
+        "id",
+        id
+      );
+
+
+  if(error){
+
+    console.error(
+      error
+    );
+
+
+    toast(
+      "No se pudo eliminar el cliente."
+    );
+
+
+    return;
+
+  }
+
+
+  const clientToDelete = clients.find(c => String(c.id) === String(id));
+  if(clientToDelete?.foto_url){
+    await removeStorageFile(
+      clientToDelete.foto_url,
+      "clients"
+    );
+  }
+
+  toast(
+    "Cliente eliminado."
+  );
+
+
+  await loadEverything();
+
+}
+
+
+/* =========================================================
+   MODALES
+   ========================================================= */
+
+function closeModal(id){
+
+  const modal =
+    document.getElementById(
+      id
+    );
+
+
+  if(!modal){
+
+    return;
+
+  }
+
+
+  modal.classList.remove(
+    "show"
+  );
+
+
+  setTimeout(
+    () => {
+
+      modal.style.display =
+        "none";
+
+    },
+    180
+  );
+
+}
+
+
+document
+  .querySelectorAll(
+    ".modal"
+  )
+  .forEach(
+    modal => {
+
+      modal.addEventListener(
+        "click",
+        event => {
+
+          if(
+            event.target ===
+            modal
+          ){
+
+            closeModal(
+              modal.id
+            );
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+
+/* =========================================================
+   UTILIDADES
+   ========================================================= */
+
+function formatPrice(value){
+
+  if(
+    value === null ||
+    value === undefined ||
+    String(value).trim() === ""
+  ){
+    return "—";
+  }
+
+  const raw = String(value).trim();
+  const numeric = Number(raw);
+
+  // Si es texto (por ejemplo, "Consultar precio"), se muestra tal cual.
+  if(!Number.isFinite(numeric)){
+    return escapeHTML(raw);
+  }
+
+  return new Intl.NumberFormat(
+    "es-ES",
+    { maximumFractionDigits: 2 }
+  ).format(numeric) + " USD";
+
+}
+
+
+function escapeHTML(value){
+
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+function escapeAttribute(value){
+
+  return escapeHTML(
+    value
+  );
+
+}
+
+
+function refreshIcons(){
+  if(window.lucide) lucide.createIcons();
+}
+
+
+function toast(message){
+
+  const element =
+    document.getElementById(
+      "toast"
+    );
+
+
+  element.textContent =
+    message;
+
+
+  element.style.display =
+    "block";
+
+
+  clearTimeout(
+    window.toastTimer
+  );
+
+
+  window.toastTimer =
+    setTimeout(
+      () => {
+
+        element.style.display =
+          "none";
+
+      },
+      3500
+    );
+
+}
+
+</script>
+
+</body>
+</html>
