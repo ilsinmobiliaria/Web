@@ -1415,6 +1415,58 @@ body.new-site:after{background:radial-gradient(circle at 88% 15%,#c4a66a1c,trans
 @media(max-width:760px){.ils-logo{width:49px!important;height:45px!important}.brand-name{font-size:14px}.brand-name span{font-size:7px}.new-hero{padding-top:28px}.hero-carousel-arrow{width:36px;height:36px}}
 </style>
 
+
+<style>
+/* CARRUSEL DE ANUNCIOS ILS */
+.ads-section{padding:76px 0;background:linear-gradient(135deg,#f4f0e8,#fff 55%,#e9eee4);overflow:hidden}
+.ads-wrap{position:relative}
+.ads-heading{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:25px}
+.ads-heading h2{font-size:clamp(30px,4vw,45px);letter-spacing:-.045em;line-height:1.08;margin:9px 0 0;color:#14263f}
+.ads-heading p{color:#697789;margin:0;font-size:13px}
+.ads-track-window{overflow:hidden;border-radius:24px}
+.ads-track{display:flex;transition:transform .65s cubic-bezier(.2,.8,.2,1);touch-action:pan-y}
+.ad-slide{flex:0 0 100%;min-width:0;padding:4px}
+.ad-card{display:grid;grid-template-columns:1.05fr 1fr;min-height:310px;overflow:hidden;border-radius:23px;background:#14263f;color:white;box-shadow:0 22px 55px #14263f20;position:relative}
+.ad-image{min-height:310px;position:relative;overflow:hidden;background:#d8dce0}
+.ad-image img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover;transition:transform 1s}
+.ad-card:hover .ad-image img{transform:scale(1.06)}
+.ad-copy{padding:clamp(25px,4vw,48px);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;position:relative}
+.ad-tag{display:inline-flex;padding:7px 11px;border-radius:99px;background:#b99a62;color:#14263f;font-size:9px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
+.ad-copy h3{font-size:clamp(25px,3.3vw,39px);line-height:1.06;letter-spacing:-.04em;margin:17px 0 10px}
+.ad-copy p{color:#c1cad6;font-size:14px;line-height:1.7;margin:0 0 22px;max-width:440px}
+.ad-cta{display:inline-flex;align-items:center;gap:9px;background:#b99a62;color:#14263f;border-radius:11px;padding:13px 17px;font-size:12px;font-weight:900;transition:transform .25s,box-shadow .25s}
+.ad-cta:hover{transform:translateY(-3px);box-shadow:0 10px 25px #0003}
+.ads-controls{display:flex;align-items:center;justify-content:center;gap:13px;margin-top:19px}
+.ads-arrow{width:40px;height:40px;border:1px solid #d9dfe7;background:#fff;color:#14263f;border-radius:50%;display:grid;place-items:center;transition:.2s}
+.ads-arrow:hover{background:#14263f;color:white}
+.ads-dots{display:flex;align-items:center;gap:7px}
+.ads-dot{width:7px;height:7px;padding:0;border:0;border-radius:99px;background:#c7cdd5;transition:.25s}
+.ads-dot.active{width:23px;background:#b99a62}
+@media(max-width:700px){.ads-section{padding:55px 0}.ads-heading{align-items:flex-start;flex-direction:column}.ad-card{grid-template-columns:1fr}.ad-image{min-height:210px;height:210px}.ad-copy{padding:25px}.ad-copy h3{font-size:29px}.ad-copy p{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.ads-track,.ad-image img,.ad-cta,.ads-arrow,.ads-dot{transition:none!important}}
+</style>
+
+
+<style>
+/* ANUNCIO LATERAL FLOTANTE ILS */
+.ils-side-ad{position:fixed;z-index:9998;left:18px;top:50%;width:258px;transform:translate(-125%,-50%) scale(.96);opacity:0;pointer-events:none;border-radius:18px;overflow:hidden;background:#14263f;color:#fff;box-shadow:0 20px 65px #07152855;border:1px solid #b99a6270;transition:transform .65s cubic-bezier(.2,.85,.25,1),opacity .4s ease}
+.ils-side-ad.is-visible{transform:translate(0,-50%) scale(1);opacity:1;pointer-events:auto;animation:ilsAdGlow 3.4s ease-in-out infinite}
+.ils-side-ad .side-ad-close{position:absolute;right:9px;top:9px;z-index:3;width:31px;height:31px;border:1px solid #ffffffa6;border-radius:50%;background:#101b2bd9;color:#fff;font-size:22px;line-height:1;display:grid;place-items:center;cursor:pointer;box-shadow:0 3px 12px #0004}
+.ils-side-ad .side-ad-media{height:150px;position:relative;overflow:hidden;background:#26374d}
+.ils-side-ad .side-ad-media img{height:100%;width:100%;object-fit:cover;display:block}
+.ils-side-ad .side-ad-media:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#14263fbb,transparent 65%);pointer-events:none}
+.ils-side-ad .side-ad-body{padding:17px 17px 19px}
+.ils-side-ad .side-ad-label{display:inline-block;font-size:9px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#14263f;background:#b99a62;border-radius:99px;padding:6px 9px}
+.ils-side-ad h3{font-size:22px;line-height:1.1;letter-spacing:-.035em;margin:12px 0 8px}
+.ils-side-ad p{color:#d0d7e0;font-size:12px;line-height:1.55;margin:0 0 14px}
+.ils-side-ad .side-ad-cta{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:#b99a62;color:#14263f;text-decoration:none;font-size:11px;font-weight:900;padding:12px;border-radius:10px;transition:transform .2s,background .2s}
+.ils-side-ad .side-ad-cta:hover{transform:translateY(-2px);background:#d2b577}
+.ils-side-ad .side-ad-code{font-size:9px;color:#aeb9c8;margin-top:10px;text-align:center;letter-spacing:.08em}
+@keyframes ilsAdGlow{0%,100%{box-shadow:0 20px 65px #07152855,0 0 0 0 #b99a6200}50%{box-shadow:0 20px 65px #07152855,0 0 0 5px #b99a6218}}
+@media(max-width:700px){.ils-side-ad{left:10px;right:10px;top:auto;bottom:12px;width:auto;max-width:390px;margin:0 auto;transform:translateY(130%) scale(.98)}.ils-side-ad.is-visible{transform:translateY(0) scale(1)}.ils-side-ad .side-ad-media{height:125px}.ils-side-ad .side-ad-body{padding:13px 15px 15px}.ils-side-ad h3{font-size:19px;margin:9px 0 6px}.ils-side-ad p{margin-bottom:10px}}
+@media(prefers-reduced-motion:reduce){.ils-side-ad,.ils-side-ad.is-visible,.ils-side-ad .side-ad-cta{animation:none!important;transition:none!important}}
+</style>
+
 </head>
 
 <body class="new-site">
@@ -1486,6 +1538,20 @@ body.new-site:after{background:radial-gradient(circle at 88% 15%,#c4a66a1c,trans
       <div class="property-grid" id="propertyGrid"><div class="loading-state">Preparando el catálogo...</div></div>
     </div>
   </section>
+
+  <!-- Anuncios patrocinados: situado antes de las dos secciones finales -->
+  <section class="ads-section" id="anuncios">
+    <div class="container ads-wrap">
+      <div class="ads-heading"><div><span class="section-kicker">ESPACIO PARA ANUNCIANTES</span><h2>Descubre algo <em style="color:#9a7b43">nuevo.</em></h2></div><p>Marcas y servicios recomendados por ILS.</p></div>
+      <div class="ads-track-window" id="adsWindow"><div class="ads-track" id="adsTrack">
+        <article class="ad-slide"><div class="ad-card"><div class="ad-image"><img src="https://images.unsplash.com/photo-1492141936521-3f2f4f9f8f5b?auto=format&fit=crop&w=1200&q=85" alt="Vehículo anunciado" loading="lazy"></div><div class="ad-copy"><span class="ad-tag">Anuncio destacado · 01</span><h3>Encuentra tu próximo vehículo</h3><p>Conoce esta oferta y contacta directamente con el anunciante por WhatsApp.</p><a class="ad-cta" href="#" data-ad="auto">Consultar anuncio <span aria-hidden="true">↗</span></a></div></div></article>
+        <article class="ad-slide"><div class="ad-card"><div class="ad-image"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85" alt="Interior de vivienda" loading="lazy"></div><div class="ad-copy"><span class="ad-tag">Anuncio destacado · 02</span><h3>Ideas para hacer tu hogar especial</h3><p>Descubre productos y servicios para mejorar y disfrutar cada espacio.</p><a class="ad-cta" href="#" data-ad="hogar">Consultar anuncio <span aria-hidden="true">↗</span></a></div></div></article>
+        <article class="ad-slide"><div class="ad-card"><div class="ad-image"><img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=85" alt="Equipo profesional" loading="lazy"></div><div class="ad-copy"><span class="ad-tag">Anuncio destacado · 03</span><h3>Servicios que te ayudan a avanzar</h3><p>Escríbele al anunciante para recibir más información sobre su servicio.</p><a class="ad-cta" href="#" data-ad="servicios">Consultar anuncio <span aria-hidden="true">↗</span></a></div></div></article>
+      </div></div>
+      <div class="ads-controls"><button class="ads-arrow" id="adsPrev" aria-label="Anuncio anterior">‹</button><div class="ads-dots" id="adsDots" aria-label="Elegir anuncio"></div><button class="ads-arrow" id="adsNext" aria-label="Anuncio siguiente">›</button></div>
+    </div>
+  </section>
+
   <section class="how-section" id="como-funciona"><div class="container how-inner"><div><span class="section-kicker">SENCILLO DESDE EL PRINCIPIO</span><h2>Menos vueltas.<br><em>Mejores decisiones.</em></h2></div><div class="how-steps"><article><span>01</span><div><h3>Explora</h3><p>Usa los filtros para encontrar opciones que se ajusten a lo que buscas.</p></div><i data-lucide="compass"></i></article><article><span>02</span><div><h3>Conoce cada detalle</h3><p>Abre una propiedad para ver sus fotos, características y descripción.</p></div><i data-lucide="images"></i></article><article><span>03</span><div><h3>Da el siguiente paso</h3><p>Contacta desde la ficha de la propiedad que te interese.</p></div><i data-lucide="message-circle"></i></article></div></div></section>
 </main>
 <footer class="new-footer"><div class="container footer-main"><a class="brand footer-brand" href="#inicio"><img class="ils-logo" src="Black Monoline Real Estate Logo.png" alt="ILS Inmobiliaria Real Estate"><span class="brand-name">ILS <span>INMOBILIARIA REAL ESTATE</span></span></a><div><strong>¿Buscas algo especial?</strong><p>Empieza por explorar el catálogo.</p></div><a href="#propiedades" class="footer-link">Ver propiedades <i data-lucide="arrow-up-right"></i></a></div><div class="container footer-last"><span>© <span id="year"></span> · Catálogo inmobiliario</span><a href="admin.html">Acceso administrativo ↗</a></div></footer>
@@ -3075,6 +3141,77 @@ document.addEventListener(
 }
 
 </style>
+
+
+<script>
+(()=>{
+  const track=document.getElementById('adsTrack');
+  const windowEl=document.getElementById('adsWindow');
+  if(!track||!windowEl)return;
+  const slides=[...track.querySelectorAll('.ad-slide')];
+  const dots=document.getElementById('adsDots');
+  let index=0,timer=null,startX=0;
+  const phones={auto:'NUMERO_AUTO_AQUI',hogar:'NUMERO_HOGAR_AQUI',servicios:'NUMERO_SERVICIOS_AQUI'};
+  const codes={auto:'ILS-AUTO-01',hogar:'ILS-HOGAR-02',servicios:'ILS-SERV-03'};
+  const labels={auto:'vehículo anunciado',hogar:'anuncio de hogar',servicios:'servicio anunciado'};
+  slides.forEach((_,i)=>{const b=document.createElement('button');b.className='ads-dot'+(i===0?' active':'');b.type='button';b.setAttribute('aria-label','Mostrar anuncio '+(i+1));b.addEventListener('click',()=>show(i));dots.appendChild(b)});
+  function show(n){index=(n+slides.length)%slides.length;track.style.transform=`translateX(-${index*100}%)`;[...dots.children].forEach((d,i)=>{d.classList.toggle('active',i===index);d.setAttribute('aria-current',i===index?'true':'false')})}
+  function stop(){if(timer)clearInterval(timer);timer=null}
+  function start(){stop();if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)timer=setInterval(()=>show(index+1),5000)}
+  document.getElementById('adsPrev').addEventListener('click',()=>{show(index-1);start()});
+  document.getElementById('adsNext').addEventListener('click',()=>{show(index+1);start()});
+  windowEl.addEventListener('mouseenter',stop);windowEl.addEventListener('mouseleave',start);
+  windowEl.addEventListener('focusin',stop);windowEl.addEventListener('focusout',start);
+  windowEl.addEventListener('touchstart',e=>{startX=e.changedTouches[0].screenX},{passive:true});
+  windowEl.addEventListener('touchend',e=>{const dx=e.changedTouches[0].screenX-startX;if(Math.abs(dx)>45){show(index+(dx<0?1:-1));start()}},{passive:true});
+  track.querySelectorAll('[data-ad]').forEach(link=>link.addEventListener('click',e=>{e.preventDefault();const key=link.dataset.ad;const phone=(phones[key]||'').replace(/\D/g,'');if(!phone){alert('Este anuncio todavía no tiene un número configurado. Añade el número de WhatsApp del anunciante en la configuración del carrusel.');return}const message=`Hola, vi el anuncio de ${labels[key]} en ILS Inmobiliaria. Código de referencia: ${codes[key]}. ¿Podrían darme más información?`;window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`,'_blank','noopener,noreferrer')}));
+  show(0);start();
+})();
+</script>
+
+
+<!-- Anuncio lateral promocional: aparece automáticamente cada 60 segundos -->
+<aside class="ils-side-ad" id="ilsSideAd" aria-label="Anuncio destacado" aria-hidden="true">
+  <button class="side-ad-close" id="ilsSideAdClose" type="button" aria-label="Cerrar anuncio">×</button>
+  <div class="side-ad-media"><img src="https://media1.giphy.com/media/kIFxBVLjENTjyas8yU/giphy.gif" alt="GIF animado de automóvil" loading="lazy"></div>
+  <div class="side-ad-body">
+    <span class="side-ad-label">Anuncio destacado</span>
+    <h3>¿Buscas tu próximo auto?</h3>
+    <p>Conoce esta oferta y contacta directamente con el anunciante por WhatsApp.</p>
+    <a class="side-ad-cta" id="ilsSideAdContact" href="#">Consultar por WhatsApp <span aria-hidden="true">↗</span></a>
+    <div class="side-ad-code">CÓDIGO DE REFERENCIA: ILS-LATERAL-04</div>
+  </div>
+</aside>
+<script>
+(()=>{
+  const ad=document.getElementById('ilsSideAd');
+  const close=document.getElementById('ilsSideAdClose');
+  const contact=document.getElementById('ilsSideAdContact');
+  if(!ad||!close||!contact)return;
+  // Sustituye este valor por el WhatsApp del anunciante, con código de país y sin + ni espacios.
+  const advertiserPhone='NUMERO_ANUNCIO_LATERAL_AQUI';
+  const referenceCode='ILS-LATERAL-04';
+  let showTimer=null, hideTimer=null, dismissed=false;
+  function hide(){ad.classList.remove('is-visible');ad.setAttribute('aria-hidden','true');}
+  function show(){
+    dismissed=false;ad.classList.add('is-visible');ad.setAttribute('aria-hidden','false');
+    clearTimeout(hideTimer);
+    // Se oculta automáticamente tras 18 segundos; la X lo cierra de inmediato.
+    hideTimer=setTimeout(hide,18000);
+  }
+  close.addEventListener('click',()=>{dismissed=true;hide();clearTimeout(hideTimer)});
+  contact.addEventListener('click',e=>{
+    e.preventDefault();
+    const phone=advertiserPhone.replace(/\D/g,'');
+    if(!phone){alert('Falta configurar el WhatsApp del anunciante lateral. Busca advertiserPhone en el código y sustituye NUMERO_ANUNCIO_LATERAL_AQUI por el número con código de país.');return;}
+    const message=`Hola, vi el anuncio lateral de automóvil en la página de ILS Inmobiliaria. Código de referencia: ${referenceCode}. ¿Me pueden dar más información?`;
+    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`,'_blank','noopener,noreferrer');
+  });
+  // Primera aparición al minuto y repetición cada minuto mientras la página siga abierta.
+  showTimer=setInterval(()=>{if(!document.hidden)show()},60000);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)hide()});
+})();
+</script>
 
 </body>
 </html>
