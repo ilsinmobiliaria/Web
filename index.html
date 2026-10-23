@@ -3151,8 +3151,8 @@ document.addEventListener(
   const slides=[...track.querySelectorAll('.ad-slide')];
   const dots=document.getElementById('adsDots');
   let index=0,timer=null,startX=0;
-  const phones={auto:'NUMERO_AUTO_AQUI',hogar:'NUMERO_HOGAR_AQUI',servicios:'NUMERO_SERVICIOS_AQUI'};
-  const codes={auto:'ILS-AUTO-01',hogar:'ILS-HOGAR-02',servicios:'ILS-SERV-03'};
+  const phones={auto:'5350134751',hogar:'NUMERO_HOGAR_AQUI',servicios:'NUMERO_SERVICIOS_AQUI'};
+  const codes={auto:'ILS-Inmobiliaria',hogar:'ILS-Inmobiliaria',servicios:'ILS-Inmobiliaria'};
   const labels={auto:'vehículo anunciado',hogar:'anuncio de hogar',servicios:'servicio anunciado'};
   slides.forEach((_,i)=>{const b=document.createElement('button');b.className='ads-dot'+(i===0?' active':'');b.type='button';b.setAttribute('aria-label','Mostrar anuncio '+(i+1));b.addEventListener('click',()=>show(i));dots.appendChild(b)});
   function show(n){index=(n+slides.length)%slides.length;track.style.transform=`translateX(-${index*100}%)`;[...dots.children].forEach((d,i)=>{d.classList.toggle('active',i===index);d.setAttribute('aria-current',i===index?'true':'false')})}
@@ -3178,7 +3178,7 @@ document.addEventListener(
     <span class="side-ad-label">Anuncio destacado</span>
     <h3>¿Buscas tu próximo auto Rentado?</h3>
     <p>Conoce esta oferta y contacta directamente con el anunciante por WhatsApp.</p>
-    <a class="side-ad-cta" id="ilsSideAdContact" href="#">Consultar por WhatsApp <span aria-hidden="true">↗</span></a>
+    <a class="side-ad-cta" id="ilsSideAdContact" href="5350134751">Consultar por WhatsApp <span aria-hidden="true">↗</span></a>
     <div class="side-ad-code">CÓDIGO DE REFERENCIA: ILS-Inmobiliaria</div>
   </div>
 </aside>
