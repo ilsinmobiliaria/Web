@@ -1432,6 +1432,62 @@ body.new-site::after{
 
 
 
+
+<style>
+/* Contacto y redes sociales ILS */
+.ils-contact{padding:82px 0;background:rgba(255,255,255,.76);border-top:1px solid #e8e1d5}
+.ils-contact-inner{display:grid;grid-template-columns:1fr .9fr;gap:40px;align-items:center}
+.ils-contact-kicker{font-size:10px;font-weight:900;letter-spacing:.18em;color:#927544}
+.ils-contact-intro h2{font-size:clamp(34px,4vw,52px);line-height:1.08;letter-spacing:-.04em;margin:13px 0}
+.ils-contact-intro h2 em{font-family:"Playfair Display",serif;color:#9a7b43;font-weight:500}
+.ils-contact-intro p{color:#697789;max-width:530px}
+.ils-contact-card{background:#fff;border:1px solid #e8e1d5;border-radius:22px;padding:27px;box-shadow:0 15px 40px #14263f0c}
+.ils-contact-card h3{margin:0 0 15px;font-size:21px}
+.ils-contact-card>a,.ils-socials a{display:block;padding:10px 0;color:#14263f;font-size:14px;overflow-wrap:anywhere}
+.ils-contact-card>a:hover,.ils-socials a:hover{color:#8b7040;text-decoration:underline}
+.ils-socials{border-top:1px solid #eee7dc;margin-top:12px;padding-top:14px}
+.ils-socials>span{font-size:11px;color:#697789;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.ils-ad-overlay{position:fixed;inset:0;z-index:1200;background:rgba(12,22,38,.64);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:18px;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+.ils-ad-overlay.show{opacity:1;visibility:visible}
+.ils-ad-box{position:relative;width:min(520px,100%);background:#fff;border-radius:24px;padding:28px;text-align:center;box-shadow:0 30px 100px #0005;transform:translateY(20px) scale(.97);transition:transform .35s}
+.ils-ad-overlay.show .ils-ad-box{transform:none}
+.ils-ad-close{position:absolute;right:12px;top:10px;border:0;background:#f1f2f4;color:#14263f;width:36px;height:36px;border-radius:50%;font-size:27px;line-height:1}
+.ils-ad-tag{display:inline-block;color:#8b7040;font-size:10px;font-weight:900;letter-spacing:.18em}
+.ils-ad-box h2{font-size:clamp(24px,5vw,34px);margin:8px 25px 18px;color:#14263f}
+.ils-ad-link{display:block;position:relative;overflow:hidden;border-radius:15px;background:#f4f1eb}
+.ils-ad-link img{width:100%;height:230px;object-fit:cover}
+.ils-ad-link span{display:block;background:#14263f;color:white;padding:12px;font-size:13px;font-weight:800}
+.ils-ad-box p{font-size:11px;color:#778296;margin:13px 0 0}
+@media(max-width:760px){.ils-contact-inner{grid-template-columns:1fr;gap:22px}.ils-contact{padding:60px 0}.ils-ad-box{padding:23px 18px}.ils-ad-link img{height:190px}}
+@media(prefers-reduced-motion:reduce){.ils-ad-overlay,.ils-ad-box{transition:none}}
+
+/* Bienvenida inteligente para nuevos visitantes */
+.ils-welcome-overlay{position:fixed;inset:0;z-index:1300;background:rgba(10,22,39,.68);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:18px;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.ils-welcome-overlay.show{opacity:1;visibility:visible}
+.ils-welcome-card{position:relative;width:min(590px,100%);max-height:min(92vh,800px);overflow:auto;background:#fff;border:1px solid #e9e0d1;border-radius:26px;padding:clamp(22px,4vw,36px);box-shadow:0 30px 100px #0005;transform:translateY(18px) scale(.98);transition:transform .3s}
+.ils-welcome-overlay.show .ils-welcome-card{transform:none}
+.ils-welcome-close{position:absolute;right:13px;top:13px;border:0;background:#f2f3f5;color:#14263f;width:36px;height:36px;border-radius:50%;font-size:26px;cursor:pointer}
+.ils-welcome-kicker{font-size:10px;font-weight:900;letter-spacing:.18em;color:#927544;text-transform:uppercase}
+.ils-welcome-card h2{font-size:clamp(27px,5vw,38px);line-height:1.1;letter-spacing:-.035em;color:#14263f;margin:10px 35px 12px 0}
+.ils-welcome-card p{color:#697789;line-height:1.55;font-size:14px}
+.ils-welcome-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+.ils-welcome-primary,.ils-welcome-secondary,.ils-welcome-submit{border-radius:12px;padding:14px 16px;font:inherit;font-weight:800;cursor:pointer;text-align:center}
+.ils-welcome-primary,.ils-welcome-submit{border:0;background:#14263f;color:#fff}
+.ils-welcome-secondary{border:1px solid #ded7ca;background:#fff;color:#14263f}
+.ils-welcome-form{display:none;margin-top:18px}
+.ils-welcome-form.active{display:block}
+.ils-welcome-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ils-welcome-field{display:flex;flex-direction:column;gap:6px;text-align:left}
+.ils-welcome-field.full{grid-column:1/-1}
+.ils-welcome-field label{font-size:12px;font-weight:800;color:#26364a}
+.ils-welcome-field input,.ils-welcome-field select,.ils-welcome-field textarea{width:100%;min-width:0;border:1px solid #d9dfe6;border-radius:10px;padding:11px 12px;background:#fff;color:#14263f;font:inherit;font-size:14px;box-sizing:border-box}
+.ils-welcome-submit{width:100%;margin-top:14px}
+.ils-welcome-note{font-size:11px!important;margin-bottom:0}
+@media(max-width:520px){.ils-welcome-actions,.ils-welcome-grid{grid-template-columns:1fr}.ils-welcome-field.full{grid-column:auto}.ils-welcome-card{padding:25px 19px}}
+@media(prefers-reduced-motion:reduce){.ils-welcome-overlay,.ils-welcome-card{transition:none}}
+
+</style>
+
 </head>
 
 <body class="new-site">
@@ -1441,6 +1497,7 @@ body.new-site::after{
     <nav class="nav-links" id="navLinks">
       <a href="#propiedades">Explorar propiedades</a>
       <a href="#como-funciona">Cómo funciona</a>
+      <a href="#contacto">Contacto</a>
       <a class="admin-btn" href="admin.html"><i data-lucide="shield-check"></i> Administración</a>
       <a class="nav-cta" href="#propiedades">Encontrar mi hogar <i data-lucide="arrow-up-right"></i></a>
     </nav>
@@ -1504,8 +1561,28 @@ body.new-site::after{
     </div>
   </section>
   <section class="how-section" id="como-funciona"><div class="container how-inner"><div><span class="section-kicker">SENCILLO DESDE EL PRINCIPIO</span><h2>Menos vueltas.<br><em>Mejores decisiones.</em></h2></div><div class="how-steps"><article><span>01</span><div><h3>Explora</h3><p>Usa los filtros para encontrar opciones que se ajusten a lo que buscas.</p></div><i data-lucide="compass"></i></article><article><span>02</span><div><h3>Conoce cada detalle</h3><p>Abre una propiedad para ver sus fotos, características y descripción.</p></div><i data-lucide="images"></i></article><article><span>03</span><div><h3>Da el siguiente paso</h3><p>Contacta desde la ficha de la propiedad que te interese.</p></div><i data-lucide="message-circle"></i></article></div></div></section>
+
+  <section class="ils-contact" id="contacto">
+    <div class="container ils-contact-inner">
+      <div class="ils-contact-intro">
+        <span class="ils-contact-kicker">ESTAMOS PARA AYUDARTE</span>
+        <h2>Hablemos de tu <em>próxima propiedad.</em></h2>
+        <p>¿Buscas comprar, vender o necesitas más información? Contacta directamente con ILS Inmobiliaria.</p>
+      </div>
+      <div class="ils-contact-card">
+        <h3>Contacto directo</h3>
+        <a href="https://wa.me/5356939025" target="_blank" rel="noopener">WhatsApp · +53 56939025</a>
+        <a href="https://wa.me/5353061298" target="_blank" rel="noopener">WhatsApp · +53 53061298</a>
+        <a href="mailto:ilsinmobiliaria09@gmail.com">✉ ilsinmobiliaria09@gmail.com</a>
+        <div class="ils-socials"><span>Síguenos:</span>
+          <a href="https://www.instagram.com/ils_inmobiliaria/" target="_blank" rel="noopener">Instagram @ils_inmobiliaria</a>
+          <a href="https://www.instagram.com/kevin.agente/" target="_blank" rel="noopener">Instagram @kevin.agente</a>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
-<footer class="new-footer"><div class="container footer-main"><a class="brand footer-brand" href="#inicio"><img class="ils-logo" src="Black Monoline Real Estate Logo.png" alt="ILS Inmobiliaria Real Estate"><span class="brand-name">ILS <span>INMOBILIARIA REAL ESTATE</span></span></a><div><strong>¿Buscas algo especial?</strong><p>Empieza por explorar el catálogo.</p></div><a href="#propiedades" class="footer-link">Ver propiedades <i data-lucide="arrow-up-right"></i></a></div><div class="container footer-last"><span>© <span id="year"></span> · Catálogo inmobiliario</span><a href="admin.html">Acceso administrativo ↗</a></div></footer>
+<footer class="new-footer"><div class="container footer-main"><a class="brand footer-brand" href="#inicio"><img class="ils-logo" src="Black Monoline Real Estate Logo.png" alt="ILS Inmobiliaria Real Estate"><span class="brand-name">ILS <span>INMOBILIARIA REAL ESTATE</span></span></a><div><strong>¿Buscas algo especial?</strong><p>Empieza por explorar el catálogo.</p></div><a href="#contacto" class="footer-link">Contactar <i data-lucide="arrow-up-right"></i></a></div><div class="container footer-last"><span>© <span id="year"></span> · Catálogo inmobiliario</span><a href="admin.html">Acceso administrativo ↗</a></div></footer>
 <!-- MODAL -->
 
 <div class="modal" id="propertyModal">
@@ -1569,6 +1646,56 @@ Hablar sobre esta propiedad
 
 </div>
 
+
+
+<!-- Banner publicitario emergente: aparece cada 60 segundos -->
+<div class="ils-ad-overlay" id="ilsAdOverlay" aria-hidden="true">
+  <div class="ils-ad-box" role="dialog" aria-modal="true" aria-labelledby="ilsAdTitle">
+    <button class="ils-ad-close" id="ilsAdClose" aria-label="Cerrar anuncio">×</button>
+    <span class="ils-ad-tag">ANUNCIO</span>
+    <h2 id="ilsAdTitle">Descubre esta oportunidad</h2>
+    <a class="ils-ad-link" id="ilsAdLink" href="https://wa.me/5350134751?text=Hola%2C%20vengo%20de%20parte%20de%20ILS%20Inmobiliaria%20y%20quiero%20saber%20los%20precios%20de%20alquilar%20un%20carro." target="_blank" rel="noopener" aria-label="Abrir anuncio ">
+      <img src="https://yourimageshare.com/ib/fvgxq6b89p.gif" alt="GIF publicitario de ejemplo"
+           onerror="this.onerror=null;this.src='https://yourimageshare.com/ib/fvgxq6b89p.gif';">
+      <span>Ver anuncio ↗</span>
+    </a>
+    <p>Este es un GIF provisional. Puedes cambiar la imagen y el enlace cuando tengas tu anuncio definitivo.</p>
+  </div>
+</div>
+
+
+<!-- Bienvenida para visitantes nuevos: ejemplo de captación de compradores -->
+<div class="ils-welcome-overlay" id="ilsWelcomeOverlay" aria-hidden="true">
+  <section class="ils-welcome-card" role="dialog" aria-modal="true" aria-labelledby="ilsWelcomeTitle">
+    <button class="ils-welcome-close" id="ilsWelcomeClose" type="button" aria-label="Cerrar ventana">×</button>
+    <div id="ilsWelcomeIntro">
+      <span class="ils-welcome-kicker">ILS INMOBILIARIA REAL ESTATE</span>
+      <h2 id="ilsWelcomeTitle">¡Encuentra una propiedad a tu medida! 🏡</h2>
+      <p>Cuéntanos qué estás buscando y te ayudaremos a identificar propiedades que se ajusten a tus necesidades.</p>
+      <div class="ils-welcome-actions">
+        <button class="ils-welcome-primary" id="ilsStartSearch" type="button">Estoy buscando</button>
+        <button class="ils-welcome-secondary" id="ilsWelcomeLater" type="button">Ahora no</button>
+      </div>
+      <p class="ils-welcome-note">Solo te tomará un minuto. Puedes continuar navegando cuando quieras.</p>
+    </div>
+    <form class="ils-welcome-form" id="ilsBuyerForm">
+      <span class="ils-welcome-kicker">CUÉNTANOS QUÉ NECESITAS</span>
+      <h2>Busquemos tu próxima propiedad</h2>
+      <div class="ils-welcome-grid">
+        <div class="ils-welcome-field"><label for="ilsLeadType">Tipo de propiedad *</label><select id="ilsLeadType" required><option value="">Selecciona</option><option>Casa</option><option>Apartamento</option><option>Terreno</option><option>Local comercial</option><option>Otro</option></select></div>
+        <div class="ils-welcome-field"><label for="ilsLeadZone">Zona de interés *</label><select id="ilsLeadZone" required><option value="">Selecciona</option><option>La Habana</option><option>Matanzas</option><option>Otra zona de Cuba</option><option>Flexible</option></select></div>
+        <div class="ils-welcome-field"><label for="ilsLeadBudget">Presupuesto aproximado</label><select id="ilsLeadBudget"><option value="No especificado">Prefiero no decirlo</option><option>Menos de 20.000 USD</option><option>20.000–50.000 USD</option><option>50.000–100.000 USD</option><option>Más de 100.000 USD</option><option>Negociable</option></select></div>
+        <div class="ils-welcome-field"><label for="ilsLeadRooms">Habitaciones</label><select id="ilsLeadRooms"><option>No aplica / flexible</option><option>1</option><option>2</option><option>3</option><option>4 o más</option></select></div>
+        <div class="ils-welcome-field full"><label for="ilsLeadNeeds">Características importantes</label><input id="ilsLeadNeeds" type="text" maxlength="180" placeholder="Ej.: garaje, patio, placa libre…"></div>
+        <div class="ils-welcome-field full"><label for="ilsLeadContact">Tu nombre y contacto (opcional)</label><input id="ilsLeadContact" type="text" maxlength="100" placeholder="Nombre y teléfono o WhatsApp"></div>
+        <div class="ils-welcome-field full"><label><input id="ilsLeadConsent" type="checkbox" required style="width:auto;margin-right:7px">Acepto que ILS utilice estos datos para responder a mi solicitud.</label></div>
+      </div>
+      <button class="ils-welcome-submit" type="submit">Enviar solicitud por WhatsApp ↗</button>
+      <button class="ils-welcome-secondary" id="ilsBackWelcome" type="button" style="width:100%;margin-top:8px">Volver</button>
+      <p class="ils-welcome-note">Al continuar, se abrirá WhatsApp con el mensaje preparado. Tendrás que pulsar enviar allí.</p>
+    </form>
+  </section>
+</div>
 
 <div class="toast" id="toast"></div>
 
@@ -3092,6 +3219,84 @@ document.addEventListener(
 }
 
 </style>
+
+
+<script>
+(function(){
+  const overlay = document.getElementById('ilsAdOverlay');
+  const close = document.getElementById('ilsAdClose');
+  if(!overlay || !close) return;
+  let timer;
+  function showAd(){
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden','false');
+  }
+  function hideAd(){
+    overlay.classList.remove('show');
+    overlay.setAttribute('aria-hidden','true');
+    clearTimeout(timer);
+    timer = setTimeout(showAd, 60000);
+  }
+  close.addEventListener('click', hideAd);
+  overlay.addEventListener('click', function(event){
+    if(event.target === overlay) hideAd();
+  });
+  document.addEventListener('keydown', function(event){
+    if(event.key === 'Escape' && overlay.classList.contains('show')) hideAd();
+  });
+  // Primer anuncio tras un minuto; luego vuelve a aparecer un minuto después de cerrarlo.
+  timer = setTimeout(showAd, 60000);
+})();
+</script>
+
+
+<script>
+(function(){
+  const overlay=document.getElementById('ilsWelcomeOverlay');
+  const closeBtn=document.getElementById('ilsWelcomeClose');
+  const laterBtn=document.getElementById('ilsWelcomeLater');
+  const startBtn=document.getElementById('ilsStartSearch');
+  const backBtn=document.getElementById('ilsBackWelcome');
+  const intro=document.getElementById('ilsWelcomeIntro');
+  const form=document.getElementById('ilsBuyerForm');
+  if(!overlay||!closeBtn||!form) return;
+  const dismissedKey='ilsWelcomeDismissedUntil';
+  const submittedKey='ilsWelcomeSubmittedUntil';
+  const now=Date.now();
+  // Recuerda la elección en este navegador; no usa ni almacena la dirección IP.
+  if(Number(localStorage.getItem(submittedKey)||0)>now || Number(localStorage.getItem(dismissedKey)||0)>now) return;
+  let timer=setTimeout(showWelcome,10000);
+  function showWelcome(){overlay.classList.add('show');overlay.setAttribute('aria-hidden','false');}
+  function hideWelcome(rememberDays){
+    overlay.classList.remove('show');overlay.setAttribute('aria-hidden','true');
+    if(rememberDays) localStorage.setItem(dismissedKey,String(Date.now()+rememberDays*86400000));
+  }
+  function showForm(){intro.style.display='none';form.classList.add('active');document.getElementById('ilsLeadType').focus();}
+  function showIntro(){form.classList.remove('active');intro.style.display='';}
+  startBtn.addEventListener('click',showForm);
+  backBtn.addEventListener('click',showIntro);
+  closeBtn.addEventListener('click',()=>hideWelcome(7));
+  laterBtn.addEventListener('click',()=>hideWelcome(7));
+  overlay.addEventListener('click',e=>{if(e.target===overlay)hideWelcome(7);});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('show'))hideWelcome(7);});
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    const type=document.getElementById('ilsLeadType').value;
+    const zone=document.getElementById('ilsLeadZone').value;
+    const budget=document.getElementById('ilsLeadBudget').value;
+    const rooms=document.getElementById('ilsLeadRooms').value;
+    const needs=document.getElementById('ilsLeadNeeds').value.trim()||'No especificadas';
+    const contact=document.getElementById('ilsLeadContact').value.trim()||'No indicado';
+    if(!document.getElementById('ilsLeadConsent').checked){return;}
+    const message='Hola, ILS Inmobiliaria. Estoy buscando una propiedad.\nTipo: '+type+'\nZona: '+zone+'\nPresupuesto: '+budget+'\nHabitaciones: '+rooms+'\nCaracterísticas: '+needs+'\nNombre y contacto: '+contact+'\nLlegué desde la página web de ILS.';
+    // Marca como enviada al abrir WhatsApp; el visitante aún debe confirmar el envío allí.
+    localStorage.setItem(submittedKey,String(Date.now()+30*86400000));
+    window.open('https://wa.me/5356939025?text='+encodeURIComponent(message),'_blank','noopener');
+    hideWelcome(0);
+  });
+  window.addEventListener('beforeunload',()=>clearTimeout(timer));
+})();
+</script>
 
 </body>
 </html>
