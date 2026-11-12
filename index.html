@@ -2978,6 +2978,300 @@ body.new-site::after{
 
 
 
+
+<style id="ils-property-cards-refresh">
+/* ILS — renovación exclusiva del catálogo de propiedades */
+#propertyGrid{
+  align-items:stretch;
+  gap:26px;
+}
+#propertyGrid .property-card{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  overflow:hidden;
+  border:1px solid #e7e2d8!important;
+  border-radius:15px!important;
+  background:#fff!important;
+  box-shadow:0 12px 34px rgba(25,22,17,.065)!important;
+  animation:ilsCardEnter .55s both;
+  transition:transform .32s ease,box-shadow .32s ease,border-color .32s ease;
+}
+#propertyGrid .property-card:hover{
+  transform:translateY(-8px);
+  border-color:#c5a46d!important;
+  box-shadow:0 24px 54px rgba(25,22,17,.14)!important;
+}
+@keyframes ilsCardEnter{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:translateY(0)}
+}
+#propertyGrid .property-image{
+  position:relative;
+  width:100%;
+  height:auto!important;
+  aspect-ratio:16/9!important;
+  overflow:hidden;
+  isolation:isolate;
+  background:#e9e6df;
+}
+#propertyGrid .property-image img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:transform .7s cubic-bezier(.2,.7,.2,1);
+}
+#propertyGrid .property-card:hover .property-image img{transform:scale(1.055)}
+#propertyGrid .property-image-shade{
+  position:absolute;
+  inset:35% 0 0;
+  z-index:1;
+  pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(0,0,0,.28));
+}
+#propertyGrid .property-type-badge{
+  position:absolute;
+  z-index:2;
+  top:15px;
+  left:15px;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  max-width:calc(100% - 30px);
+  padding:8px 11px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.45);
+  border-radius:5px;
+  background:rgba(15,15,15,.82);
+  color:#f5e8ca;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-overflow:ellipsis;
+  text-transform:uppercase;
+  white-space:nowrap;
+  backdrop-filter:blur(10px);
+}
+#propertyGrid .property-type-badge svg{width:13px;height:13px;flex:0 0 auto}
+#propertyGrid .property-image-hint{
+  position:absolute;
+  z-index:2;
+  right:15px;
+  bottom:14px;
+  display:grid;
+  width:35px;
+  height:35px;
+  place-items:center;
+  border:1px solid #ffffff80;
+  border-radius:50%;
+  background:#1119;
+  color:#fff;
+  opacity:0;
+  transform:translateY(5px);
+  transition:opacity .25s,transform .25s;
+}
+#propertyGrid .property-image-hint svg{width:16px;height:16px}
+#propertyGrid .property-card:hover .property-image-hint{opacity:1;transform:none}
+#propertyGrid .property-body{
+  display:flex;
+  flex:1;
+  flex-direction:column;
+  padding:21px 21px 19px!important;
+  color:#292824;
+}
+#propertyGrid .property-card-topline{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:11px;
+}
+#propertyGrid .property-code{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  min-width:0;
+  color:#9a7949!important;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:.13em;
+  overflow-wrap:anywhere;
+}
+#propertyGrid .property-code svg{width:12px;height:12px;flex:0 0 auto}
+#propertyGrid .property-status{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  flex:0 0 auto;
+  color:#6e7669;
+  font-size:9px;
+  font-weight:700;
+}
+#propertyGrid .property-status span{
+  width:6px;height:6px;border-radius:50%;
+  background:#5c9a70;
+  box-shadow:0 0 0 3px #5c9a701b;
+}
+#propertyGrid .property-body h3{
+  margin:0 0 10px!important;
+  color:#20201e!important;
+  font-family:'Playfair Display',serif!important;
+  font-size:clamp(20px,2vw,23px)!important;
+  font-weight:600!important;
+  line-height:1.17!important;
+  letter-spacing:-.025em!important;
+}
+#propertyGrid .location{
+  display:flex;
+  align-items:flex-start;
+  gap:7px;
+  min-height:0!important;
+  margin:0 0 16px;
+  color:#77766f!important;
+  font-size:11px!important;
+  line-height:1.5;
+}
+#propertyGrid .location svg{
+  width:14px;height:14px;flex:0 0 auto;
+  margin-top:1px;color:#ad8c54;
+}
+#propertyGrid .property-price-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:auto;
+  padding:13px 0 14px;
+  border-top:1px solid #eeeae2;
+  border-bottom:1px solid #eeeae2;
+}
+#propertyGrid .property-price-label{
+  color:#9a958b;
+  font-size:8px;
+  font-weight:900;
+  letter-spacing:.18em;
+}
+#propertyGrid .price{
+  margin:3px 0 0!important;
+  color:#292824!important;
+  font-size:23px!important;
+  font-weight:800!important;
+  line-height:1.15;
+  letter-spacing:-.045em!important;
+  overflow-wrap:anywhere;
+}
+#propertyGrid .property-price-mark{
+  display:grid;
+  width:36px;height:36px;
+  flex:0 0 auto;
+  place-items:center;
+  border:1px solid #e9e0d1;
+  border-radius:50%;
+  background:#faf7f0;
+  color:#a18352;
+}
+#propertyGrid .property-price-mark svg{width:17px;height:17px}
+#propertyGrid .chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:13px;
+}
+#propertyGrid .chip{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:6px 8px!important;
+  border:1px solid #eee9df;
+  border-radius:4px!important;
+  background:#f8f6f1!important;
+  color:#6c695f!important;
+  font-size:9px!important;
+  font-weight:600;
+  line-height:1.2;
+}
+#propertyGrid .chip svg{width:10px;height:10px;color:#9b865f}
+#propertyGrid .card-actions{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 48px;
+  gap:9px;
+  margin-top:18px!important;
+}
+#propertyGrid .card-actions .btn{
+  display:inline-flex;
+  min-height:46px;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+  padding:10px 13px;
+  border:1px solid #171717!important;
+  border-radius:5px!important;
+  background:#171717!important;
+  color:#fff!important;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.035em;
+  transition:background .22s,border-color .22s,transform .22s;
+}
+#propertyGrid .card-actions .view-btn:hover{
+  border-color:#c5a46d!important;
+  background:#c5a46d!important;
+  color:#171717!important;
+}
+#propertyGrid .card-actions .view-btn svg{width:16px;height:16px}
+#propertyGrid .card-actions .wa-mini{
+  width:48px;
+  padding:0;
+  border:1px solid #25845c!important;
+  background:#25845c!important;
+  color:#fff!important;
+}
+#propertyGrid .card-actions .wa-mini:hover{
+  border-color:#176b48!important;
+  background:#176b48!important;
+  transform:translateY(-2px);
+}
+#propertyGrid .card-actions .wa-mini svg{width:19px;height:19px}
+#propertyGrid .loading-state{
+  grid-column:1/-1;
+  border:1px solid #e7e2d8;
+  border-radius:12px;
+  background:#fff;
+}
+@media(max-width:1000px){
+  #propertyGrid{gap:19px}
+}
+@media(max-width:760px){
+  #propertyGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  #propertyGrid .property-body{padding:16px 14px 14px!important}
+  #propertyGrid .property-body h3{font-size:19px!important}
+  #propertyGrid .price{font-size:20px!important}
+  #propertyGrid .property-status{font-size:8px}
+  #propertyGrid .property-type-badge{top:10px;left:10px;padding:7px 9px;font-size:8px}
+  #propertyGrid .card-actions{grid-template-columns:minmax(0,1fr) 42px;gap:7px}
+  #propertyGrid .card-actions .btn{min-height:43px;padding:8px;font-size:9px}
+  #propertyGrid .card-actions .wa-mini{width:42px}
+  #propertyGrid .chips{gap:5px}
+  #propertyGrid .chip{font-size:8px!important;padding:5px 6px!important}
+}
+@media(max-width:480px){
+  #propertyGrid{grid-template-columns:1fr;gap:17px}
+  #propertyGrid .property-body{padding:19px!important}
+  #propertyGrid .property-body h3{font-size:22px!important}
+  #propertyGrid .price{font-size:23px!important}
+  #propertyGrid .card-actions{grid-template-columns:minmax(0,1fr) 48px}
+  #propertyGrid .card-actions .btn{min-height:46px;font-size:10px}
+  #propertyGrid .card-actions .wa-mini{width:48px}
+}
+@media(prefers-reduced-motion:reduce){
+  #propertyGrid .property-card,#propertyGrid .property-image img,
+  #propertyGrid .property-image-hint{animation:none!important;transition:none!important}
+}
+</style>
+
 </head>
 
 
@@ -4789,164 +5083,75 @@ function renderProperties(list){
 
       <div class="property-image">
 
-
-
         <img
-
           src="${esc(storagePublicUrl(image) || image)}"
-
           data-storage-path="${esc(image)}"
-
-          alt="${esc(p.title || "Propiedad ISL Inmobiliaria")}"
-
+          alt="${esc(p.title || "Propiedad ILS Inmobiliaria")}"
           loading="lazy"
-
           onerror="this.src='villa-fondo.png'"
-
         >
 
+        <div class="property-image-shade"></div>
 
-
-        <span class="badge">
-
+        <span class="property-type-badge">
+          <i data-lucide="home"></i>
           ${esc(p.type || "Propiedad")}
-
         </span>
 
-
-
+        <span class="property-image-hint" aria-hidden="true">
+          <i data-lucide="expand"></i>
+        </span>
       </div>
 
-
-
-
-
       <div class="property-body">
+        <div class="property-card-topline">
+          <span class="property-code">
+            <i data-lucide="hash"></i>
+            ${esc(p.code || "ILS Inmobiliaria")}
+          </span>
+          <span class="property-status"><span></span> Disponible</span>
+        </div>
 
-
-
-        <span class="property-code">
-
-          ${esc(p.code || "ISL Inmobiliaria")}
-
-        </span>
-
-
-
-        <h3>
-
-          ${esc(p.title || "Propiedad")}
-
-        </h3>
-
-
+        <h3>${esc(p.title || "Propiedad")}</h3>
 
         <div class="location">
-
-
-
-          <i data-lucide="map-pin" style="width:14px;height:14px;vertical-align:-3px"></i>
-
-
-
-          ${esc(p.location || `${p.municipality || ""}, ${p.province || ""}`)}
-
-
-
+          <i data-lucide="map-pin"></i>
+          <span>${esc(p.location || `${p.municipality || ""}, ${p.province || ""}`)}</span>
         </div>
 
-
-
-        <div class="price">
-
-          ${esc(displayPrice(p))}
-
+        <div class="property-price-row">
+          <div>
+            <span class="property-price-label">PRECIO</span>
+            <div class="price">${esc(displayPrice(p))}</div>
+          </div>
+          <span class="property-price-mark"><i data-lucide="badge-dollar-sign"></i></span>
         </div>
 
-
-
-        <div class="chips">
-
-
-
-          ${p.tags
-
-            .slice(0,3)
-
-            .map(tag =>
-
-              `<span class="chip">${esc(tag)}</span>`
-
-            )
-
-            .join("")
-
-          }
-
-
-
-        </div>
-
-
-
-
+        ${p.tags && p.tags.length ? `
+          <div class="chips" aria-label="Características">
+            ${p.tags.slice(0,3).map(tag =>
+              `<span class="chip"><i data-lucide="check"></i>${esc(tag)}</span>`
+            ).join("")}
+          </div>
+        ` : ""}
 
         <div class="card-actions">
-
-
-
-          <button
-
-            class="btn btn-dark view-btn"
-
-            type="button"
-
-          >
-
-
-
-            Ver propiedad
-
-
-
+          <button class="btn btn-dark view-btn" type="button">
+            <span>Explorar propiedad</span>
             <i data-lucide="arrow-up-right"></i>
-
-
-
           </button>
 
-
-
-
-
           <a
-
             class="btn wa-mini"
-
             target="_blank"
-
             rel="noopener"
-
             href="${waUrl(p)}"
-
-            aria-label="WhatsApp"
-
+            aria-label="Consultar esta propiedad por WhatsApp"
+            title="Consultar por WhatsApp"
           >
-
-
-
             <i data-lucide="message-circle"></i>
-
-
-
           </a>
-
-
-
         </div>
-
-
-
       </div>
 
     `;
