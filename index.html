@@ -3474,6 +3474,10 @@ body.new-site:after{display:none!important}
 }
 </style>
 
+<style>
+.ils-favorite-btn{position:absolute;right:12px;top:12px;z-index:4;width:36px;height:36px;border:0;border-radius:50%;background:rgba(255,255,255,.94);color:#26221e;display:grid;place-items:center;box-shadow:0 3px 12px rgba(0,0,0,.14)}.ils-favorite-btn svg{width:18px;height:18px}.ils-favorite-btn.is-favorite{color:#b42318}.ils-favorite-btn.is-favorite svg{fill:#b42318;stroke:#b42318}
+.ils-account-overlay{position:fixed;inset:0;z-index:1200;background:rgba(10,10,10,.68);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:18px}.ils-account-overlay.open{display:flex}.ils-account-panel{position:relative;width:min(490px,100%);max-height:calc(100vh - 36px);overflow:auto;background:#fff;border-radius:24px;padding:34px;box-shadow:0 25px 80px rgba(0,0,0,.3)}.ils-account-close{position:absolute;right:14px;top:12px;border:0;background:#f3f0eb;border-radius:50%;width:34px;height:34px;font-size:24px;line-height:1}.ils-account-panel h2{font-family:'Playfair Display',serif;font-size:32px;margin:9px 0}.ils-account-intro{color:#6c665e;font-size:13px;margin:0 0 20px}.ils-account-panel form{display:grid;gap:13px}.ils-account-panel form label{display:grid;gap:6px;font-size:12px;font-weight:700;color:#514b43}.ils-account-panel input{width:100%;border:1px solid #e5dfd5;border-radius:12px;padding:12px 13px;background:#fff;color:#222}.ils-account-panel form .btn{width:100%;margin-top:5px}.ils-auth-links{display:flex;justify-content:space-between;gap:12px;margin-top:16px;flex-wrap:wrap}.ils-auth-links button,.ils-favorite-row button{border:0;background:none;color:#8c693e;font-size:12px;font-weight:800}.ils-account-message{font-size:12px;line-height:1.5;margin:14px 0 0;overflow-wrap:anywhere}.ils-profile-favorites{margin:23px 0 17px;border-top:1px solid #e5dfd5;padding-top:16px}.ils-profile-favorites h3{font-family:'Playfair Display',serif;font-size:21px;margin:0 0 10px}.ils-favorite-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #eee}.ils-favorite-row strong,.ils-favorite-row small{display:block}.ils-favorite-row strong{font-size:12px}.ils-favorite-row small{font-size:10px;color:#777;margin-top:3px}.ils-favorite-row button{font-size:17px;padding:4px 7px}.ils-modal-favorite{width:100%;margin-top:10px;border:1px solid #e5dfd5}@media(max-width:760px){.ils-account-panel{padding:28px 20px}.ils-auth-links{flex-direction:column;align-items:flex-start}}
+</style>
 </head>
 
 
@@ -3493,6 +3497,10 @@ body.new-site:after{display:none!important}
       <a href="#como-funciona">Cómo funciona</a>
 
       <a href="#contacto">Contacto</a>
+
+      <a href="#" id="ilsAccountLink" class="admin-btn"><i data-lucide="user-round"></i> <span id="ilsAccountLabel">Iniciar sesión</span></a>
+
+      <a href="#" id="ilsFavoritesLink" class="admin-btn" style="display:none"><i data-lucide="heart"></i> Favoritos <span id="ilsFavoritesCount">0</span></a>
 
       <a class="admin-btn" href="admin.html"><i data-lucide="shield-check"></i> Administración</a>
 
@@ -3747,6 +3755,7 @@ target="_blank"
 Hablar sobre esta propiedad
 
 </a>
+<button type="button" class="btn btn-light ils-modal-favorite" id="ilsModalFavorite"><i data-lucide="heart"></i> Guardar en favoritos</button>
 
 </div>
 
@@ -3865,6 +3874,8 @@ Hablar sobre esta propiedad
 
 
 
+<div class="ils-account-overlay" id="ilsAccountOverlay" aria-hidden="true"><section class="ils-account-panel" role="dialog" aria-modal="true" aria-labelledby="ilsAccountTitle"><button type="button" class="ils-account-close" id="ilsAccountClose" aria-label="Cerrar">×</button><div id="ilsAuthView"><span class="section-kicker">ILS INMOBILIARIA</span><h2 id="ilsAccountTitle">Inicia sesión</h2><p class="ils-account-intro">Accede para guardar propiedades y contactar con nuestro equipo.</p><form id="ilsAuthForm"><label>Correo electrónico<input id="ilsAuthEmail" type="email" autocomplete="email" required placeholder="tu correo"></label><label>Contraseña<input id="ilsAuthPassword" type="password" autocomplete="current-password" minlength="6" required placeholder="Tu contraseña"></label><label id="ilsAuthNameWrap" hidden>Nombre completo<input id="ilsAuthName" type="text" autocomplete="name" placeholder="Nombre y apellidos"></label><label id="ilsAuthPhoneWrap" hidden>Teléfono<input id="ilsAuthPhone" type="tel" autocomplete="tel" placeholder="Tu teléfono"></label><button class="btn btn-dark" id="ilsAuthSubmit" type="submit">Iniciar sesión</button></form><div class="ils-auth-links"><button type="button" id="ilsAuthToggle">Crear una cuenta</button><button type="button" id="ilsForgotPassword">Olvidé mi contraseña</button></div><p class="ils-account-message" id="ilsAuthMessage" role="status"></p></div><div id="ilsProfileView" hidden><span class="section-kicker">TU CUENTA ILS</span><h2>Mi perfil</h2><form id="ilsProfileForm"><label>Nombre completo<input id="ilsProfileName" type="text" autocomplete="name" required></label><label>Teléfono<input id="ilsProfilePhone" type="tel" autocomplete="tel"></label><label>Enlace de foto de perfil<input id="ilsProfileAvatar" type="url" placeholder="https://..."></label><button class="btn btn-dark" type="submit">Guardar perfil</button></form><div class="ils-profile-favorites"><h3>Mis favoritos</h3><div id="ilsFavoriteList"><p>Tus propiedades guardadas aparecerán aquí.</p></div></div><button type="button" class="btn btn-light" id="ilsSignOut">Cerrar sesión</button><p class="ils-account-message" id="ilsProfileMessage" role="status"></p></div></section></div>
+
 <div class="toast" id="toast"></div>
 
 
@@ -3902,6 +3913,13 @@ supabase.createClient(
   SUPABASE_KEY
 
 );
+
+// Proyecto Supabase independiente: usuarios, perfiles y favoritos.
+const ILS_USERS_URL = "https://mqmddibafukwgcftbgrl.supabase.co";
+const ILS_USERS_KEY = "sb_publishable_cRirwrLYCymVaLBtpnHgJA_wvEcP1ml";
+const usersDb = supabase.createClient(ILS_USERS_URL, ILS_USERS_KEY);
+let ilsCurrentUser = null;
+let ilsFavoriteIds = new Set();
 
 
 
@@ -5286,6 +5304,9 @@ function renderProperties(list){
           <i data-lucide="home"></i>
           ${esc(p.type || "Propiedad")}
         </span>
+        <button class="ils-favorite-btn ${isFavorite(p)?'is-favorite':''}" type="button" data-favorite-id="${esc(p.id)}" aria-label="Guardar en favoritos" title="Guardar en favoritos"><i data-lucide="heart"></i></button>
+
+        
 
         <span class="property-image-hint" aria-hidden="true">
           <i data-lucide="expand"></i>
@@ -5369,9 +5390,10 @@ function renderProperties(list){
 
       );
 
-
-
-
+    card.querySelector('[data-favorite-id]')?.addEventListener('click',event=>{
+      event.stopPropagation();
+      toggleFavorite(p);
+    });
 
     grid.appendChild(card);
 
@@ -5622,7 +5644,10 @@ function updateModal(){
   $('#modalFacts').innerHTML=facts.map(f=>`<div class="ils-fact"><span>${f.icon}</span><div><b>${esc(f.value)}</b><small>${esc(f.label)}</small></div></div>`).join('');
   $('#modalFacts').hidden=!facts.length;
   $('#modalWhatsApp').href=waUrl(p);
+  const favButton=$('#ilsModalFavorite');
+  if(favButton){favButton.innerHTML=`<i data-lucide="heart"></i> ${isFavorite(p)?'Quitar de favoritos':'Guardar en favoritos'}`;favButton.classList.toggle('is-favorite',isFavorite(p));favButton.onclick=()=>toggleFavorite(p);}
   renderSimilarProperties(p);
+  if(window.lucide)lucide.createIcons();
 }
 
 
@@ -6371,6 +6396,28 @@ function toast(message){
 
 
 
+// ===== Cuenta ILS: Auth, perfil y favoritos en el proyecto Supabase nuevo =====
+const ilsAccountOverlay=$('#ilsAccountOverlay');
+function ilsMsg(id,msg,bad=false){const e=$(id);if(e){e.textContent=msg||'';e.style.color=bad?'#b42318':'#28734d';}}
+function isFavorite(p){return !!p&&ilsFavoriteIds.has(String(p.id));}
+function openIlsAccount(){ilsAccountOverlay?.classList.add('open');ilsAccountOverlay?.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';}
+function closeIlsAccount(){ilsAccountOverlay?.classList.remove('open');ilsAccountOverlay?.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+function updateIlsNav(){if($('#ilsAccountLabel'))$('#ilsAccountLabel').textContent=ilsCurrentUser?'Mi perfil':'Iniciar sesión';if($('#ilsFavoritesLink'))$('#ilsFavoritesLink').style.display=ilsCurrentUser?'inline-flex':'none';if($('#ilsFavoritesCount'))$('#ilsFavoritesCount').textContent=ilsFavoriteIds.size;}
+function ilsAuthMode(reg){$('#ilsAccountTitle').textContent=reg?'Crear cuenta':'Iniciar sesión';$('#ilsAuthSubmit').textContent=reg?'Crear cuenta':'Iniciar sesión';$('#ilsAuthNameWrap').hidden=!reg;$('#ilsAuthPhoneWrap').hidden=!reg;$('#ilsAuthToggle').textContent=reg?'Ya tengo una cuenta':'Crear una cuenta';$('#ilsAuthForm').dataset.mode=reg?'register':'login';ilsMsg('#ilsAuthMessage','');}
+function renderFavoriteList(){const host=$('#ilsFavoriteList');if(!host)return;const saved=properties.filter(p=>ilsFavoriteIds.has(String(p.id)));if(!saved.length){host.innerHTML='<p>Aún no has guardado propiedades. Usa el corazón para añadirlas aquí.</p>';return;}host.innerHTML=saved.map(p=>`<article class="ils-favorite-row"><div><strong>${esc(p.title||'Propiedad')}</strong><small>${esc(p.location||p.municipality||'Cuba')} · ${esc(displayPrice(p))}</small></div><div><button type="button" data-open-fav="${esc(p.id)}">Ver</button><button type="button" data-remove-fav="${esc(p.id)}">×</button></div></article>`).join('');host.querySelectorAll('[data-open-fav]').forEach(b=>b.onclick=()=>{const p=properties.find(x=>String(x.id)===b.dataset.openFav);closeIlsAccount();if(p)openProperty(p);});host.querySelectorAll('[data-remove-fav]').forEach(b=>b.onclick=()=>{const p=properties.find(x=>String(x.id)===b.dataset.removeFav);if(p)toggleFavorite(p,true);});}
+async function loadIlsFavorites(){ilsFavoriteIds.clear();if(!ilsCurrentUser)return;const {data,error}=await usersDb.from('favorites').select('property_id').eq('user_id',ilsCurrentUser.id);if(error){console.error(error);showToast('No se pudieron cargar los favoritos.');}else(data||[]).forEach(x=>ilsFavoriteIds.add(String(x.property_id)));updateIlsNav();renderFavoriteList();if(properties.length)renderProperties(filteredProperties);if(currentProperty)updateModal();}
+async function toggleFavorite(p,remove=false){if(!p||p.id==null){showToast('No se encontró el identificador de esta propiedad.');return;}if(!ilsCurrentUser){openIlsAccount();$('#ilsAuthView').hidden=false;$('#ilsProfileView').hidden=true;ilsAuthMode(false);ilsMsg('#ilsAuthMessage','Inicia sesión o crea una cuenta para guardar favoritos.');return;}const id=String(p.id);if(ilsFavoriteIds.has(id)||remove){const {error}=await usersDb.from('favorites').delete().eq('user_id',ilsCurrentUser.id).eq('property_id',id);if(error){console.error(error);showToast('No se pudo quitar de favoritos.');return;}ilsFavoriteIds.delete(id);showToast('Eliminado de favoritos.');}else{const {error}=await usersDb.from('favorites').insert({user_id:ilsCurrentUser.id,property_id:id});if(error){console.error(error);showToast(error.code==='23505'?'Ya estaba en tus favoritos.':'No se pudo guardar el favorito.');if(error.code!=='23505')return;}ilsFavoriteIds.add(id);showToast('Guardado en tus favoritos.');}updateIlsNav();renderFavoriteList();renderProperties(filteredProperties);if(currentProperty)updateModal();}
+async function ilsShowProfile(){if(!ilsCurrentUser)return;const {data,error}=await usersDb.from('profiles').select('full_name,phone,avatar_url').eq('id',ilsCurrentUser.id).maybeSingle();if(error)console.error(error);$('#ilsProfileName').value=data?.full_name||ilsCurrentUser.user_metadata?.full_name||'';$('#ilsProfilePhone').value=data?.phone||'';$('#ilsProfileAvatar').value=data?.avatar_url||'';$('#ilsAuthView').hidden=true;$('#ilsProfileView').hidden=false;renderFavoriteList();}
+async function ilsInitAuth(){const {data:{session}}=await usersDb.auth.getSession();ilsCurrentUser=session?.user||null;if(ilsCurrentUser)await loadIlsFavorites();updateIlsNav();usersDb.auth.onAuthStateChange((_e,s)=>{setTimeout(async()=>{ilsCurrentUser=s?.user||null;if(ilsCurrentUser)await loadIlsFavorites();else{ilsFavoriteIds.clear();renderProperties(filteredProperties);}updateIlsNav();},0);});}
+$('#ilsAccountLink')?.addEventListener('click',async e=>{e.preventDefault();openIlsAccount();if(ilsCurrentUser)await ilsShowProfile();else{ $('#ilsAuthView').hidden=false;$('#ilsProfileView').hidden=true;ilsAuthMode(false);}});
+$('#ilsFavoritesLink')?.addEventListener('click',async e=>{e.preventDefault();openIlsAccount();await ilsShowProfile();});
+$('#ilsAccountClose')?.addEventListener('click',closeIlsAccount);ilsAccountOverlay?.addEventListener('click',e=>{if(e.target===ilsAccountOverlay)closeIlsAccount();});
+$('#ilsAuthToggle')?.addEventListener('click',()=>ilsAuthMode($('#ilsAuthForm').dataset.mode!=='register'));
+$('#ilsAuthForm')?.addEventListener('submit',async e=>{e.preventDefault();const mode=$('#ilsAuthForm').dataset.mode,email=$('#ilsAuthEmail').value.trim(),password=$('#ilsAuthPassword').value,btn=$('#ilsAuthSubmit');btn.disabled=true;btn.textContent='Procesando…';try{if(mode==='register'){const full_name=$('#ilsAuthName').value.trim(),phone=$('#ilsAuthPhone').value.trim();const {data,error}=await usersDb.auth.signUp({email,password,options:{data:{full_name,phone},emailRedirectTo:location.origin+location.pathname}});if(error)throw error;if(data.session&&data.user){const {error:pe}=await usersDb.from('profiles').upsert({id:data.user.id,full_name,phone,updated_at:new Date().toISOString()},{onConflict:'id'});if(pe)console.error(pe);}ilsMsg('#ilsAuthMessage','Registro realizado. Confirma tu correo electrónico y luego inicia sesión.');}else{const {error}=await usersDb.auth.signInWithPassword({email,password});if(error)throw error;ilsMsg('#ilsAuthMessage','Sesión iniciada.');await ilsShowProfile();}}catch(err){console.error(err);ilsMsg('#ilsAuthMessage',err.message||'No se pudo completar la operación.',true);}finally{btn.disabled=false;btn.textContent=mode==='register'?'Crear cuenta':'Iniciar sesión';}});
+$('#ilsForgotPassword')?.addEventListener('click',async()=>{const email=$('#ilsAuthEmail').value.trim();if(!email){ilsMsg('#ilsAuthMessage','Escribe tu correo primero.',true);return;}const {error}=await usersDb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});ilsMsg('#ilsAuthMessage',error?.message||'Si el correo está registrado, recibirás instrucciones.',!!error);});
+$('#ilsProfileForm')?.addEventListener('submit',async e=>{e.preventDefault();if(!ilsCurrentUser)return;const row={id:ilsCurrentUser.id,full_name:$('#ilsProfileName').value.trim(),phone:$('#ilsProfilePhone').value.trim(),avatar_url:$('#ilsProfileAvatar').value.trim()||null,updated_at:new Date().toISOString()};const {error}=await usersDb.from('profiles').upsert(row,{onConflict:'id'});ilsMsg('#ilsProfileMessage',error?.message||'Perfil actualizado correctamente.',!!error);});
+$('#ilsSignOut')?.addEventListener('click',async()=>{const {error}=await usersDb.auth.signOut();if(error){ilsMsg('#ilsProfileMessage',error.message,true);return;}closeIlsAccount();$('#ilsAuthView').hidden=false;$('#ilsProfileView').hidden=true;showToast('Sesión cerrada.');});
+
 async function init(){
 
 
@@ -6768,7 +6815,10 @@ async function init(){
 
 
 
+  await ilsInitAuth();
+
   await loadProperties();
+  renderFavoriteList();
 
 
 
