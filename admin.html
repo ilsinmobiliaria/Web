@@ -611,6 +611,11 @@ th{
   color:#805e46;
 }
 
+.badge-sold{
+  background:#f5dddd;
+  color:#963b3b;
+}
+
 .tags{
   display:flex;
   gap:5px;
@@ -1844,6 +1849,19 @@ input:focus,select:focus,textarea:focus{border-color:rgba(72,102,83,.55)!importa
 
             <span>
               Publicar esta propiedad en la web
+            </span>
+
+          </div>
+
+          <div class="check-row" style="margin-top:10px">
+
+            <input
+              id="propertySold"
+              type="checkbox"
+            >
+
+            <span>
+              Marcar esta propiedad como VENDIDA
             </span>
 
           </div>
@@ -3130,6 +3148,16 @@ function renderProperties(){
                     `
                 }
 
+                ${
+                  property.sold === true
+                  ? `
+                      <span class="badge badge-sold">
+                        VENDIDA
+                      </span>
+                    `
+                  : ""
+                }
+
               </td>
 
 
@@ -3358,6 +3386,13 @@ function openPropertyModal(){
     .checked =
       false;
 
+  document
+    .getElementById(
+      "propertySold"
+    )
+    .checked =
+      false;
+
 
   document
     .getElementById(
@@ -3521,6 +3556,14 @@ function editProperty(id){
       property.published ===
       true;
 
+  document
+    .getElementById(
+      "propertySold"
+    )
+    .checked =
+      property.sold ===
+      true;
+
 
   document
     .getElementById(
@@ -3657,6 +3700,13 @@ async function saveProperty(event){
       )
       .checked;
 
+  const sold =
+    document
+      .getElementById(
+        "propertySold"
+      )
+      .checked;
+
 
   const cliente_id =
     document
@@ -3711,7 +3761,9 @@ async function saveProperty(event){
 
       history,
 
-      published,
+      published: published || sold,
+
+      sold,
 
       tags,
 
