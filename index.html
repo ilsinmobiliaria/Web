@@ -3115,6 +3115,13 @@ body.new-site::after{
   background:#5c9a70;
   box-shadow:0 0 0 3px #5c9a701b;
 }
+#propertyGrid .property-status-sold{
+  color:#a33f3f;
+}
+#propertyGrid .property-status-sold span{
+  background:#b94b4b;
+  box-shadow:0 0 0 3px #b94b4b1b;
+}
 #propertyGrid .property-body h3{
   margin:0 0 10px!important;
   color:#20201e!important;
@@ -5319,7 +5326,9 @@ function renderProperties(list){
             <i data-lucide="hash"></i>
             ${esc(p.code || "ILS Inmobiliaria")}
           </span>
-          <span class="property-status"><span></span> Disponible</span>
+          ${p.sold === true
+          ? `<span class="property-status property-status-sold"><span></span> VENDIDO</span>`
+          : `<span class="property-status"><span></span> Disponible</span>`}
         </div>
 
         <h3>${esc(p.title || "Propiedad")}</h3>
@@ -5618,7 +5627,7 @@ function updateModal(){
   renderILSCollage(images,p.title||'Propiedad');
   $('#galleryCount').textContent=`${currentImage+1} / ${Math.max(images.length,1)}`;
   $('#showPhotosLabel').textContent=`Ver todas las fotos (${images.length})`;
-  $('#modalCode').textContent=p.code||'ILS Inmobiliaria';
+  $('#modalCode').textContent=(p.code||'ILS Inmobiliaria')+(p.sold===true?' · VENDIDO':'');
   $('#modalTitle').textContent=p.title||'Propiedad';
   $('#modalPrice').textContent=displayPrice(p);
   $('#modalLocation').textContent=`📍 ${p.location||`${p.municipality||''}, ${p.province||''}`}`;
