@@ -3599,6 +3599,33 @@ body.new-site:after{display:none!important}
 @media(prefers-reduced-motion:reduce){.ils-marquee-track{animation:none}.ils-experience-card,.ils-experience-icon{transition:none}}
 </style>
 
+
+<style id="ils-sold-property-banner">
+/* Sello diagonal grande para publicaciones vendidas */
+#propertyGrid .property-image.property-image-sold{position:relative!important;isolation:isolate!important;overflow:hidden!important}
+#propertyGrid .property-image.property-image-sold>img{filter:saturate(.78) brightness(.88)!important}
+#propertyGrid .ils-sold-ribbon{
+  position:absolute!important;z-index:8!important;left:-16%!important;top:39%!important;
+  width:132%!important;height:clamp(58px,8vw,88px)!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  transform:rotate(-22deg)!important;pointer-events:none!important;
+  background:linear-gradient(100deg,rgba(165,12,20,.94),rgba(220,24,34,.96) 48%,rgba(165,12,20,.94))!important;
+  border-top:2px solid rgba(255,255,255,.75)!important;
+  border-bottom:2px solid rgba(255,255,255,.75)!important;
+  box-shadow:0 8px 24px rgba(0,0,0,.28)!important;
+}
+#propertyGrid .ils-sold-ribbon span{
+  color:#fff!important;font-family:Arial,Helvetica,sans-serif!important;
+  font-size:clamp(28px,4.2vw,48px)!important;font-weight:1000!important;
+  line-height:1!important;letter-spacing:.16em!important;text-transform:uppercase!important;
+  text-shadow:0 2px 4px rgba(0,0,0,.22)!important;
+}
+@media(max-width:760px){
+  #propertyGrid .ils-sold-ribbon{top:40%!important;height:64px!important}
+  #propertyGrid .ils-sold-ribbon span{font-size:34px!important}
+}
+</style>
+
 </head>
 
 
@@ -5407,16 +5434,17 @@ function ilsBuildPropertyCard(p,index){
   const rating=(4.1+(ratingSeed%10)/10).toFixed(1);
   const fullStars=Math.round(Number(rating));
   card.innerHTML=`
-    <div class="property-image">
+    <div class="property-image ${p.sold===true?'property-image-sold':''}">
       <img src="${esc(storagePublicUrl(image)||image)}" data-storage-path="${esc(image)}" alt="${esc(p.title||'Propiedad ILS Inmobiliaria')}" loading="lazy" onerror="this.src='villa-fondo.png'">
       <div class="property-image-shade"></div>
+      ${p.sold===true?'<div class="ils-sold-ribbon" aria-label="Propiedad vendida"><span>VENDIDA</span></div>':''}
       <span class="property-type-badge"><i data-lucide="home"></i>${esc(p.type||'Propiedad')}</span>
       <button class="ils-favorite-btn ${isFavorite(p)?'is-favorite':''}" type="button" data-favorite-id="${esc(p.id)}" aria-label="Guardar en favoritos" title="Guardar en favoritos"><i data-lucide="heart"></i></button>
       <span class="property-image-hint" aria-hidden="true"><i data-lucide="expand"></i></span>
     </div>
     <div class="property-body">
       <div class="property-card-topline"><span class="property-code"><i data-lucide="hash"></i>${esc(p.code||'ILS Inmobiliaria')}</span>
-      ${p.sold===true?'<span class="property-status property-status-sold"><span></span> VENDIDO</span>':'<span class="property-status"><span></span> Disponible</span>'}</div>
+      ${p.sold===true?'':'<span class="property-status"><span></span> Disponible</span>'}</div>
       <h3>${esc(p.title||'Propiedad')}</h3>
       <div class="location"><i data-lucide="map-pin"></i><span>${esc(p.location||`${p.municipality||''}, ${p.province||''}`)}</span></div>
       <div class="ils-rating" aria-label="Valoración ${rating} de 5"><span class="ils-stars" aria-hidden="true">${Array.from({length:5},(_,star)=>`<span class="${star<fullStars?'is-filled':''}">★</span>`).join('')}</span><strong>${rating}</strong><small>/ 5</small></div>
